@@ -1,17 +1,22 @@
-## bored af
+# bored af
 
-### use conda and install requirements with
+## use conda
+### install python requirements for server by
 
 ```bash
+cd server
 pip install -r requirements.txt
+python app.py
 ```
 
-### install npm with
+### install npm and initialise client by
 ```bash
 conda install nodejs
+cd client
+npm init
+npm install
+npm run
 ```
 
 ### you also need redis
 install from here: https://github.com/MicrosoftArchive/redis/releases
-
-ask wasil on how to install js shit (stuff in /client/package.json)
