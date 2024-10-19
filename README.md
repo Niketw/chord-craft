@@ -1,6 +1,6 @@
 # Setup guide
 
-## use conda (just use miniconda3 in pycharm)
+## use conda ( just use miniconda3 in pycharm or the one i gave on whatsapp )
 ### install python requirements for server by
 
 ```bash
@@ -20,3 +20,5 @@ npm run
 
 ### you also need redis
 install from here: https://github.com/MicrosoftArchive/redis/releases
+
+#### *note: make sure tools like proxifier are off
