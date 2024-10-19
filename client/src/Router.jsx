@@ -3,6 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
+import VerifyOtpPage from "./pages/VerifyOtpPage";
 
 const Router = () => {
     return (
@@ -11,6 +12,7 @@ const Router = () => {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/verify" element={<VerifyOtpPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

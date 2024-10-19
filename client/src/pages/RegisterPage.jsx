@@ -5,17 +5,19 @@ const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const registerUser = async () => {
+    const registerUser = async (e) => {
+        e.preventDefault(); // Prevent default form submission
         try {
             const resp = await httpClient.post("//localhost:5000/register", {
                 email,
                 password,
             });
 
-            window.location.href = "/";
+            // Redirect to OTP verification page
+            window.location.href = "/verify";
         } catch (error) {
-            if (error.response && error.response.status === 401) {
-                alert("Invalid credentials");
+            if (error.response && error.response.status === 409) {
+                alert("User already exists");
             }
         }
     };
@@ -24,7 +26,7 @@ const RegisterPage = () => {
         <div className="flex items-center justify-center min-h-screen bg-black text-green-500">
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-sm">
                 <h1 className="text-2xl font-bold mb-6 text-center">Create an Account</h1>
-                <form>
+                <form onSubmit={registerUser}> {/* Add onSubmit handler */}
                     <div className="mb-4">
                         <label className="block mb-2" htmlFor="email">Email:</label>
                         <input
@@ -46,8 +48,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <button
-                        type="button"
-                        onClick={registerUser}
+                        type="submit" // Change to type="submit"
                         className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition"
                     >
                         Submit
