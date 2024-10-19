@@ -1,6 +1,6 @@
 # Setup guide
 
-## use conda
+## use conda (just use miniconda3 in pycharm)
 ### install python requirements for server by
 
 ```bash
