@@ -19,11 +19,13 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+
 def send_otp(email, otp):
     msg = Message("Your OTP Code", recipients=[email])
     msg.body = f"Your OTP code is: {otp}"
     with current_app.app_context():
         mail.send(msg)
+
 
 @app.route("/@me")
 def get_current_user():
@@ -37,6 +39,7 @@ def get_current_user():
         "id": user.id,
         "email": user.email
     })
+
 
 @app.route("/register", methods=["POST"])
 def register_user():
@@ -65,6 +68,7 @@ def register_user():
         "message": "Registration successful! Please verify your email."
     }), 201
 
+
 @app.route("/verify", methods=["POST"])
 def verify_otp():
     otp = request.json.get("otp")
@@ -79,6 +83,7 @@ def verify_otp():
     session.pop("otp")
 
     return jsonify({"message": "Email verified successfully!"})
+
 
 @app.route("/login", methods=["POST"])
 def login_user():
@@ -100,10 +105,12 @@ def login_user():
         "email": user.email
     })
 
+
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
     return "200"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
