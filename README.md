@@ -1,4 +1,4 @@
-# bored af
+# Setup guide
 
 ## use conda
 ### install python requirements for server by
