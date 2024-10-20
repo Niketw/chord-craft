@@ -2,7 +2,8 @@ import Header from '../components/Header';
 import hero_logo from '../vectors/hero_logo.svg';
 import { useState } from 'react';
 
-const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+const apiUrl = import.meta.env.VITE_API_URL;
+const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function VerifyOTP() {
     const [otp, setOTP] = useState("");
@@ -10,7 +11,7 @@ export default function VerifyOTP() {
     const verifyOtp = async () => {
         console.log("Entered OTP:", otp); // Log the OTP being sent
         try {
-            await httpClient.post(`//localhost:${S_PORT}/verify`, { otp });
+            await httpClient.post(`${apiUrl}:${serverPort}`, { otp });
             alert("Email verified successfully!");
             window.location.href = "/";
         } catch (error) {

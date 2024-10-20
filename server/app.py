@@ -115,7 +115,7 @@ def logout_user():
     session.pop("user_id")
     return "200"
 
-PORT = int(os.getenv("S_PORT"))
+# PORT = int(os.getenv("S_PORT"))
 
 if __name__ == "__main__":
-    app.run(debug=True, port=PORT)
+    app.run(debug=True, port=5001)

@@ -2,7 +2,8 @@ import Header from '../components/Header';
 import hero_logo from '../vectors/hero_logo.svg';
 import { useState } from 'react';
 
-const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+const apiUrl = import.meta.env.VITE_API_URL;
+const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function Signup() {
     const [name, setName] = useState("");
@@ -12,7 +13,7 @@ export default function Signup() {
     const registerUser = async (e) => {
         e.preventDefault(); // Prevent default form submission
         try {
-            const resp = await httpClient.post(`//localhost:${S_PORT}/register`, {
+            const resp = await httpClient.post(`${apiUrl}:${serverPort}/register`, {
                 email,
                 password,
             });
@@ -34,7 +35,7 @@ export default function Signup() {
             <div className='flex bg-craft_grey text-primary min-h-[542px] items-center overflow-clip rounded-2xl'>
                 <div className="working-container px-28 grid gap-5 justify-center justify-items-center">
                     <img src={hero_logo} className="w-36"/>
-                    <form action="" onSubmit={registerUser} method="post" className="grid grid-rows-4 gap-3 items-center">
+                    <form method="post" className="grid grid-rows-4 gap-3 items-center">
                         <div>
                             <label htmlFor="name" className='mb-1'>Name</label>
                             <input
@@ -62,9 +63,9 @@ export default function Signup() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        <button className='btn-alter-default justify-self-center' type='submit'>SignUp</button>
+                        <button className='btn-alter-default justify-self-center' onClick={registerUser}>SignUp</button>
                     </form>
-                    <p className="font-light">Have an account? <a href="/" className='text-action'> Login </a> </p>
+                    <p className="font-light">Have an account? <a href="/login" className='text-action'> Login </a> </p>
                 </div>
                 <div className="display-container px-16 max-w-[468px] blue-grad self-stretch flex flex-col justify-center">
                     <h3 className="display-text leading-[48px]">Begin your

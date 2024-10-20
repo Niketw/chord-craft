@@ -2,7 +2,8 @@ import Header from '../components/Header';
 import hero_logo from '../vectors/hero_logo.svg';
 import { useState } from 'react';
 
-const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+const apiUrl = import.meta.env.VITE_API_URL;
+const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function Login() {
         console.log(email, password);
 
         try {
-            const resp = await httpClient.post(`//localhost:${S_PORT}/login`, {
+            const resp = await httpClient.post(`${apiUrl}:${serverPort}/login`, {
                 email,
                 password,
             }, { withCredentials: true });
@@ -53,7 +54,7 @@ export default function Login() {
                         </div>
                         <button className='btn-alter-default justify-self-center' type='submit'>Login</button>
                     </form>
-                    <p className="font-light">New here? <a href="/" className='text-action'> Register </a> </p>
+                    <p className="font-light">New here? <a href="/register" className='text-action'> Register </a> </p>
                 </div>
                 <div className="display-container px-16 max-w-[468px] blue-grad self-stretch flex flex-col justify-center">
                     <h3 className="display-text leading-[48px]">Resume your

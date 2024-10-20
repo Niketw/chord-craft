@@ -3,20 +3,25 @@ import Hero_logo from '../vectors/Hero_logo.svg';
 import Ellipse from '../vectors/Ellipse 2.svg';
 import { useState, useEffect } from 'react';
 
-const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+const apiUrl = import.meta.env.VITE_API_URL;
+const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function Landing() {
     const [user, setUser] = useState(null);
 
     const logoutUser = async () => {
-        await httpClient.post(`//localhost:${S_PORT}/logout`);
+        await httpClient.post(`${apiUrl}:${serverPort}/logout`);
         window.location.href = "/";
     };
+
+    const getStarted = () => {
+        window.location.href = "/register";
+    }
 
     useEffect(() => {
         (async () => {
             try {
-                const resp = await httpClient.get(`//localhost:${S_PORT}/@me`);
+                const resp = await httpClient.get(`${apiUrl}:${serverPort}/@me`);
                 setUser(resp.data);
             } catch (error) {
                 console.log("Not authenticated");
@@ -27,7 +32,7 @@ export default function Landing() {
 
     return (
         <>
-        <Header props={user}/>
+        <Header props={user, logoutUser}/>
         <section className="bg-craft_grey overflow-x-clip h-screen flex flex-col">
             
             <div className="hero grow grid items-center pl-32 relative  grid-cols-2 min-h-[600px]">
@@ -38,7 +43,7 @@ export default function Landing() {
             <div className='self-center absolute bottom-24'> 
                 {user ? <h3>Welcome {user.email} </h3> 
                  : 
-                 <button className='btn-default'> Get Started </button>}
+                 <button className='btn-default' onClick={getStarted}> Get Started </button>}
                 
             </div>
 
