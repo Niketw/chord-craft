@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../HttpClient";
 
+const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+
 const LandingPage = () => {
     const [user, setUser] = useState(null);
 
     const logoutUser = async () => {
-        await httpClient.post("//localhost:5000/logout");
+        await httpClient.post(`//localhost:${S_PORT}/logout`);
         window.location.href = "/";
     };
 
     useEffect(() => {
         (async () => {
             try {
-                const resp = await httpClient.get("//localhost:5000/@me");
+                const resp = await httpClient.get(`//localhost:${S_PORT}/@me`);
                 setUser(resp.data);
             } catch (error) {
                 console.log("Not authenticated");

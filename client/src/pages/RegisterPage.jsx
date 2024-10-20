@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import httpClient from "../HttpClient";
 
+const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+
+
 const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -8,7 +11,7 @@ const RegisterPage = () => {
     const registerUser = async (e) => {
         e.preventDefault(); // Prevent default form submission
         try {
-            const resp = await httpClient.post("//localhost:5000/register", {
+            const resp = await httpClient.post(`//localhost:${S_PORT}/register`, {
                 email,
                 password,
             });

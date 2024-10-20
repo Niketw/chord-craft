@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import httpClient from "../HttpClient";
 
+const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -9,7 +11,7 @@ const LoginPage = () => {
         console.log(email, password);
 
         try {
-            const resp = await httpClient.post("//localhost:5000/login", {
+            const resp = await httpClient.post(`//localhost:${S_PORT}/login`, {
                 email,
                 password,
             }, { withCredentials: true });

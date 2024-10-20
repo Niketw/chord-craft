@@ -5,7 +5,9 @@ from flask_mail import Mail, Message
 from flask_session import Session
 from config import ApplicationConfig
 from models import db, User
+from dotenv import load_dotenv
 import random
+import os
 
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -15,6 +17,8 @@ mail = Mail(app)
 CORS(app, supports_credentials=True)
 server_session = Session(app)
 db.init_app(app)
+
+load_dotenv()
 
 with app.app_context():
     db.create_all()
@@ -111,6 +115,7 @@ def logout_user():
     session.pop("user_id")
     return "200"
 
+PORT = int(os.getenv("S_PORT"))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=PORT)

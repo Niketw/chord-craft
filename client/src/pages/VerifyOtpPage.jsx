@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import httpClient from "../HttpClient";
 
+const S_PORT = parseInt(process.env.REACT_APP_S_PORT, 10);
+
 const VerifyOtpPage = () => {
     const [otp, setOtp] = useState("");
 
     const verifyOtp = async () => {
         console.log("Entered OTP:", otp); // Log the OTP being sent
         try {
-            await httpClient.post("//localhost:5000/verify", { otp });
+            await httpClient.post(`//localhost:${S_PORT}/verify`, { otp });
             alert("Email verified successfully!");
             window.location.href = "/";
         } catch (error) {
