@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:0;
+}
+
+html {
+    
+}
+
+@layer base {
+    h1 {
+        @apply text-3xl font-default font-bold; 
+    }
+    h2 {
+        @apply text-2xl font-default font-bold;
+
+    }
+    h3 {
+        @apply text-xl font-default font-semibold;
+
+    }
+    h4 {
+        @apply text-lg font-default font-medium;
+
+    }
+    p {
+        @apply text-base font-default font-normal;
+
+    }
+
+    input {
+        background-color: rgba(255, 250, 247, .1);
+        color:theme(colors.primary);
+        width:100%;
+        padding: 6px 8px;
+        border:none;
+        border-radius:4px;
+        transition: all .1s ease;
+    }
+    input:focus{
+        outline:none;
+        background-color: rgba(255, 250, 247, .2);
+    }
+
+}
+
+@layer components {
+    .btn-default {
+        display: inline-flex;
+        height: 2.5rem;
+        padding: 0.625rem 1.75rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+        flex-shrink: 0;
+
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        font-weight:medium;
+        font-family: theme(fontFamily.default);
+        color: theme(colors.primary);
+        /* border: 1px solid theme(colors.action); */
+        background: theme(colors.action);
+        transition: transform .2s ease;
+    }
+
+    .btn-default:hover {
+        box-shadow: 0px 2px 2.1px 0px rgba(0, 0, 0, 0.28);
+        transform: translateY(-2px);
+    }
+
+    .btn-default.dis{
+        cursor: not-allowed;
+
+        background: rgba(255, 101, 0, 0.50);
+        color: rgba(255, 250, 247, .5);
+    }
+
+    .btn-alter-default{
+        display: inline-flex;
+        padding: 0.625rem 2.25rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        font-weight:medium;
+        font-family: theme(fontFamily.default);
+        border: 1px solid theme(colors.primary);
+        background: theme(colors.craft_black);
+        color:theme(colors.primary);
+        transition: all .2s ease;
+    }
+
+    .btn-alter-default:hover{
+        border-radius: 0.25rem;
+        background: theme(colors.primary);
+        color: theme(colors.craft_black);
+    }
+
+    .btn-alter-default.dis{
+        cursor: not-allowed;
+        border: 1px solid rgba(255, 250, 247, 0.60);
+        border-radius: 0.25rem;
+        background: rgba(255, 250, 247, 0.60);
+        color: theme(colors.craft_black);
+    }
+
+    .blue-grad{
+        background: var(--Radial, radial-gradient(149.65% 143.7% at 14.32% 50.09%, rgba(16, 62, 114, 0.59) 0%, rgba(0, 0, 0, 0.59) 100%));
+    }
+
+}
