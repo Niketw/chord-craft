@@ -24,11 +24,11 @@ export default function Landing() {
             }
         })();
     }, []);
-    
+
 
     return (
         <>
-        <Header user={user}/>
+        <Header />
         <section className="bg-craft_grey overflow-x-clip h-screen flex flex-col">
             
             <div className="hero grow grid items-center pl-32 relative  grid-cols-2 min-h-[600px]">
@@ -38,11 +38,13 @@ export default function Landing() {
 
             <div className='self-center absolute bottom-24'>
 
-                {user ? <h4 className="text-primary">Welcome {user.email} </h4>
+                {user ? <h4 className="text-primary">Welcome {user.name} </h4>
                  : 
                  <button className='btn-default' onClick={getStarted}> Get Started </button>}
                 
             </div>
+
+            <a href="/compare">Compare audio</a>
 
         </section>
         <section className="bg-craft_grey h-screen">

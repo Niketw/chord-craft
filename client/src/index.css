@@ -53,7 +53,7 @@ html {
 @layer components {
     .btn-default {
         display: inline-flex;
-        height: 2.5rem;
+        /*height: 2.5rem;*/
         padding: 0.625rem 1.75rem;
         justify-content: center;
         align-items: center;
@@ -65,7 +65,7 @@ html {
         font-weight:medium;
         font-family: theme(fontFamily.default);
         color: theme(colors.primary);
-        /* border: 1px solid theme(colors.action); */
+        border: 1px solid theme(colors.action);
         background: theme(colors.action);
         transition: transform .2s ease;
     }
