@@ -1,5 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const PORT = parseInt(process.env.VITE_C_PORT, 10);
 
 export default defineConfig({
   plugins: [react()],
@@ -7,8 +12,8 @@ export default defineConfig({
     postcss: './postcss.config.js',
     },
   server: {
-    port: 3000, // Set Vite to run on port 3000
-    open: true, // Automatically open the app in your browser
+    port: PORT,
+    open: true,
   },
 });
 
