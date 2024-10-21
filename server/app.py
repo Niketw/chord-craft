@@ -73,6 +73,7 @@ def register_user():
 
     return jsonify({
         "id": new_user.id,
+        "name": new_user.name,
         "email": new_user.email,
         "message": "Registration successful! Please verify your email."
     }), 201

@@ -14,6 +14,7 @@ export default function Signup() {
         e.preventDefault(); // Prevent default form submission
         try {
             const resp = await httpClient.post(`/register`, {
+                name,
                 email,
                 password,
             });
