@@ -15,10 +15,11 @@ conda install nodejs
 cd client
 npm init
 npm install
-npm run
+npm run dev
 ```
 
 ### you also need redis
-install from here: https://github.com/MicrosoftArchive/redis/releases
+[Windows](https://github.com/MicrosoftArchive/redis/releases)
+[MAC](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-mac-os/)
 
 #### *note: make sure tools like proxifier are off
