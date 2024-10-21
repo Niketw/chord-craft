@@ -14,7 +14,10 @@ app.config.from_object(ApplicationConfig)
 
 bcrypt = Bcrypt(app)
 mail = Mail(app)
-CORS(app, supports_credentials=True)
+#CORS(app, supports_credentials=True)
+C_PORT = int(os.getenv("C_PORT"))
+
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": f"http://localhost:{C_PORT}"}})
 server_session = Session(app)
 db.init_app(app)
 
@@ -115,7 +118,7 @@ def logout_user():
     session.pop("user_id")
     return "200"
 
-# PORT = int(os.getenv("S_PORT"))
+PORT = int(os.getenv("S_PORT"))
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=PORT)

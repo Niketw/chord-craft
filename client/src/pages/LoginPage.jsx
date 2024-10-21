@@ -1,9 +1,9 @@
 import Header from '../components/Header';
 import hero_logo from '../vectors/hero_logo.svg';
 import { useState } from 'react';
+import httpClient from "../HttpClient.js";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -13,7 +13,7 @@ export default function Login() {
         console.log(email, password);
 
         try {
-            const resp = await httpClient.post(`${apiUrl}:${serverPort}/login`, {
+            const resp = await httpClient.post(`${apiUrl}/login`, {
                 email,
                 password,
             }, { withCredentials: true });
@@ -33,7 +33,7 @@ export default function Login() {
             <div className='flex bg-craft_grey text-primary min-h-[542px] items-center'>
                 <div className="working-container px-28 grid gap-5 justify-center justify-items-center">
                     <img src={hero_logo} className="w-36"/>
-                    <form action="" onSubmit={logInUser} method="post" className="grid grid-rows-3 gap-3 items-center">
+                    <form onSubmit={logInUser} method="post" className="grid grid-rows-3 gap-3 items-center">
                         <div>
                             <label htmlFor="email" className='mb-1'>Email</label>
                             <input
@@ -52,7 +52,7 @@ export default function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        <button className='btn-alter-default justify-self-center' type='submit'>Login</button>
+                        <button className='btn-alter-default justify-self-center' type={'submit'}>Login</button>
                     </form>
                     <p className="font-light">New here? <a href="/register" className='text-action'> Register </a> </p>
                 </div>

@@ -4,13 +4,12 @@ import Ellipse from '../vectors/Ellipse 2.svg';
 import { useState, useEffect } from 'react';
 
 const apiUrl = import.meta.env.VITE_API_URL;
-const serverPort = import.meta.env.VITE_S_PORT;
 
 export default function Landing() {
     const [user, setUser] = useState(null);
 
     const logoutUser = async () => {
-        await httpClient.post(`${apiUrl}:${serverPort}/logout`);
+        await httpClient.post(`${apiUrl}/logout`);
         window.location.href = "/";
     };
 
@@ -21,7 +20,7 @@ export default function Landing() {
     useEffect(() => {
         (async () => {
             try {
-                const resp = await httpClient.get(`${apiUrl}:${serverPort}/@me`);
+                const resp = await httpClient.get(`${apiUrl}/@me`);
                 setUser(resp.data);
             } catch (error) {
                 console.log("Not authenticated");
@@ -32,7 +31,7 @@ export default function Landing() {
 
     return (
         <>
-        <Header props={user, logoutUser}/>
+        <Header props={user}/>
         <section className="bg-craft_grey overflow-x-clip h-screen flex flex-col">
             
             <div className="hero grow grid items-center pl-32 relative  grid-cols-2 min-h-[600px]">
