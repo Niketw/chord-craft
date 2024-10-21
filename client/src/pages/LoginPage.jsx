@@ -9,11 +9,12 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const logInUser = async () => {
+    const logInUser = async (e) => {
+        e.preventDefault();
         console.log(email, password);
 
         try {
-            const resp = await httpClient.post(`${apiUrl}/login`, {
+            const resp = await httpClient.post('/login', {
                 email,
                 password,
             }, { withCredentials: true });
