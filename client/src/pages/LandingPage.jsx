@@ -30,7 +30,7 @@ export default function Landing() {
         <>
         <Header />
         <section className="bg-craft_grey overflow-x-clip h-screen flex flex-col">
-            
+
             <div className="hero grow grid items-center pl-32 relative  grid-cols-2 min-h-[600px]">
                 <img src={Hero_logo}/>
                 <img src={Ellipse} className="absolute right-0 bottom-0 translate-x-[56%] translate-y-[33%] w-3/5 lg:w-1/2 transition-all" />
@@ -39,16 +39,16 @@ export default function Landing() {
             <div className='self-center absolute bottom-24'>
 
                 {user ? <h4 className="text-primary">Welcome {user.name} </h4>
-                 : 
+                 :
                  <button className='btn-default' onClick={getStarted}> Get Started </button>}
-                
+
             </div>
 
-            <a href="/compare">Compare audio</a>
+            <a href="/compare"> <button className="btn-alter-default">Compare audio</button></a>
 
         </section>
         <section className="bg-craft_grey h-screen">
-            
+
         </section>
         </>
     )
