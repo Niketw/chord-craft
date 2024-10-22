@@ -34,14 +34,19 @@ def send_otp(email, otp):
         mail.send(msg)
 
 
-@app.route("/@me")
+@app.route('/@me', methods=["GET"])
 def get_current_user():
     user_id = session.get("user_id")
+    print(user_id)
 
     if not user_id:
         return jsonify({"error": "Unauthorized"}), 401
 
     user = User.query.filter_by(id=user_id).first()
+
+    if not user:
+        return jsonify({"error": "User not found."}), 404
+
     return jsonify({
         "id": user.id,
         "name": user.name,
@@ -144,15 +149,17 @@ def register_user():
         return jsonify({"error": "Internal Server Error"}), 500
 
 
-@app.route('/verify', methods=['POST'])
+@app.route("/verify", methods=["POST"])
 def verify_otp():
-    otp = request.json.get('otp')  # Use .get() to safely retrieve data
-
+    otp = request.json.get('otp') # Use .get() to safely retrieve data
+    print(otp)
     try:
         # Check if OTP matches the one in the session
-        if 'otp' in session and session.get('otp') == otp:
+        if 'otp' in session:
+            print(f"Session OTP: {session.get('otp')}, Provided OTP: {otp}")  # Debug log
             # Retrieve the user from the database using the email stored in session
             email = session.get('email')
+            print(f"Retrieving user with email: {email}")  # Debug log
             user = User.query.filter_by(email=email).first()
 
             if user:
@@ -168,8 +175,8 @@ def verify_otp():
             else:
                 return jsonify({"error": "User not found."}), 404
         else:
-            # If OTP is invalid or not in the session
-            return jsonify({"error": "Invalid OTP"}), 400
+            return jsonify({"error": "No OTP in session."}), 400
+
     except Exception as e:
         print(f"Error verifying OTP: {e}")
         return jsonify({"error": "Internal Server Error"}), 500
