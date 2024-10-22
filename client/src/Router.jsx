@@ -4,7 +4,6 @@ import Login from "./pages/LoginPage";
 import Signup from "./pages/SignupPage";
 import VerifyOTP from "./pages/VerifyOTP";
 import NotFound from "./pages/NotFound";
-import Comparator from "./pages/Recorder.jsx"
 import Recorder from "./pages/Recorder.jsx";
 
 export default function App() {
