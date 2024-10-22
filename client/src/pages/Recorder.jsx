@@ -72,7 +72,7 @@ export default function Recorder() {
         const formData = new FormData();
         formData.append('audio', recordedBlob, 'recording.ogg');
 
-        fetch('/audio-to-midi', {
+        fetch('/converter', {
             method: 'POST',
             body: formData,
         })
