@@ -4,7 +4,8 @@ import Login from "./pages/LoginPage";
 import Signup from "./pages/SignupPage";
 import VerifyOTP from "./pages/VerifyOTP";
 import NotFound from "./pages/NotFound";
-import Comparator from "./pages/Comparator.jsx"
+import Comparator from "./pages/Recorder.jsx"
+import Recorder from "./pages/Recorder.jsx";
 
 export default function App() {
     return (
@@ -14,7 +15,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Signup />} />
                 <Route path="/verify" element={<VerifyOTP />} />
-                <Route path="/compare" element = {<Comparator />} />
+                <Route path="/recorder" element = {<Recorder />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

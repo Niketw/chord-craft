@@ -44,7 +44,7 @@ export default function Landing() {
 
             </div>
 
-            <a href="/compare"> <button className="btn-alter-default">Compare audio</button></a>
+            <a href="/recorder"> <button className="btn-alter-default">Compare audio</button></a>
 
         </section>
         <section className="bg-craft_grey h-screen">
