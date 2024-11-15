@@ -14,3 +14,17 @@ class User(db.Model):
     email = db.Column(db.String(345), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     otp_verified = db.Column(db.Boolean, default=False)
+
+
+
+# Model definition for storing MIDI files
+class MidiStorage(db.Model):
+    __tablename__ = 'songs'  # Specify table name
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    filename = db.Column(db.String(255), nullable=False)
+    file_data = db.Column(db.LargeBinary, nullable=False)  # Store binary data for MIDI files
+    created_at = db.Column(db.DateTime, server_default=db.func.now())  # Timestamp for when the file was added
+
+    def __repr__(self):
+        return f"<MidiStorage id={self.id}, filename={self.filename}>"

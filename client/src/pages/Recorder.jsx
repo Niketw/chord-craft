@@ -1,139 +1,204 @@
-import React, { useState, useRef, useEffect } from 'react';
+// import React, { useState } from 'react';
+// import Header from "../components/Header.jsx";
+// import { saveAs } from 'file-saver';
+//
+// export default function Recorder() {
+//     // State for tracking if the MIDI file has been sent
+//     const [fileSent, setFileSent] = useState(false);
+//
+//     // Function to send a hardcoded MIDI file to the backend for comparison
+//     const sendMidiToBackend = () => {
+//         // Replace with the path or actual file data you want to use
+//         fetch('../../../../../Songs/Faded.mid')
+//             .then(response => response.blob())
+//             .then(midiBlob => {
+//                 console.log('Preparing to send MIDI file to backend for comparison...');
+//                 const formData = new FormData();
+//                 formData.append('midi', midiBlob, 'Faded.mid');
+//
+//                 // Send the MIDI file to the comparator endpoint
+//                 fetch('/comparator', {
+//                     method: 'POST',
+//                     body: formData,
+//                 })
+//                     .then((response) => {
+//                         if (!response.ok) {
+//                             throw new Error('Network response was not ok');
+//                         }
+//                         return response.json(); // Assuming the backend returns comparison results as JSON
+//                     })
+//                     .then((comparisonResult) => {
+//                         console.log('Comparison result received:', comparisonResult);
+//                         alert('Comparison completed! Check the console for details.');
+//                         setFileSent(true);
+//                     })
+//                     .catch((error) => {
+//                         console.error('Error sending MIDI file for comparison:', error);
+//                         alert('An error occurred while sending the MIDI file for comparison. Please try again.');
+//                     });
+//             })
+//             .catch(error => {
+//                 console.error('Error fetching the hardcoded MIDI file:', error);
+//                 alert('Error loading the hardcoded MIDI file. Please check the file path.');
+//             });
+//     };
+//
+//     return (
+//         <>
+//             <Header />
+//             <section className="bg-craft_grey h-screen overflow-y-scroll px-24 py-32">
+//                 <h2 className="text-primary">MIDI Comparator</h2>
+//                 <div className="input_interface border border-primary px-3 flex gap-4 items-center mb-4">
+//                     <h4 className="text-primary w-44">Send MIDI File for Comparison</h4>
+//                     <div className="flex gap-4">
+//                         <button className="btn-default" onClick={sendMidiToBackend} disabled={fileSent}>
+//                             {fileSent ? 'File Sent' : 'Send for Comparison'}
+//                         </button>
+//                     </div>
+//                 </div>
+//
+//                 {/* Analysis Output Interface */}
+//                 <div className="output_interface border border-primary rounded-3xl px-3">
+//                     <h4 className="text-primary w-44">Comparison Results</h4>
+//                     <div className="flex gap-4"></div>
+//                     <h4 className="text-primary w-44">Graph</h4>
+//                     <div className="flex gap-4"></div>
+//                 </div>
+//             </section>
+//         </>
+//     );
+// }
+
+
+
+// import React, { useState } from 'react';
+// import Header from "../components/Header.jsx";
+// import httpClient from "../HttpClient.js";
+//
+// export default function Recorder() {
+//     // State for tracking the result of the comparison
+//     const [fileSent, setFileSent] = useState(false);
+//
+//     // Function to send the MIDI file path to the backend for comparison
+//     const sendMidiToBackend = async () => {
+//         const midiFilePath = '../pages/Faded.mid'; // Path to the MIDI file
+//
+//         try {
+//             // Send the path to the comparator endpoint using axios (httpClient)
+//             const resp = await httpClient.post('/comparator', { path: midiFilePath });
+//
+//             // Assuming the response contains comparison results
+//             console.log('Comparison result received:', response.data);
+//             alert('Comparison completed! Check the console for details.');
+//             setFileSent(true);
+//         } catch (error) {
+//             // Check for specific error status (e.g., if the file already exists)
+//             if (error.response && error.response.status === 409) {
+//                 alert('MIDI file already exists or there was a conflict');
+//             } else {
+//                 console.error('Error sending MIDI file path for comparison:', error);
+//                 alert(`An error occurred: ${error.message}`);
+//             }
+//         }
+//     };
+//
+//     return (
+//         <>
+//             <Header />
+//             <section className="bg-craft_grey h-screen overflow-y-scroll px-24 py-32">
+//                 <h2 className="text-primary">MIDI Comparator</h2>
+//
+//                 <div className="input_interface border border-primary px-3 flex gap-4 items-center mb-4">
+//                     <button className="btn-default" onClick={sendMidiToBackend} disabled={fileSent}>
+//                         {fileSent ? 'File Sent' : 'Send MIDI for Comparison'}
+//                     </button>
+//                 </div>
+//
+//                 {/* Analysis Output Interface */}
+//                 <div className="output_interface border border-primary rounded-3xl px-3">
+//                     <h4 className="text-primary w-44">Comparison Results</h4>
+//                     <div className="flex gap-4"></div>
+//                     <h4 className="text-primary w-44">Graph</h4>
+//                     <div className="flex gap-4"></div>
+//                 </div>
+//             </section>
+//         </>
+//     );
+// }
+
+
+import React, { useState } from 'react';
 import Header from "../components/Header.jsx";
+import httpClient from "../HttpClient.js";
 
 export default function Recorder() {
-    const [canRecord, setCanRecord] = useState(false);
-    const [isRecording, setIsRecording] = useState(false);
-    const [recordedBlob, setRecordedBlob] = useState(null);
-    const [audioURL, setAudioURL] = useState(null);
-    const recorderRef = useRef(null);
-    const streamRef = useRef(null);
-    const chunksRef = useRef([]);
+    // State to track the comparison results and visualization image
+    const [fileSent, setFileSent] = useState(false);
+    const [comparisonResults, setComparisonResults] = useState(null);
+    const [visualization, setVisualization] = useState(null);
 
-    const setupStream = (mediaStream) => {
-        streamRef.current = mediaStream;
-        const recorder = new MediaRecorder(mediaStream);
-        recorderRef.current = recorder;
+    // Function to send the MIDI file path to the backend for comparison
+    const sendMidiToBackend = async () => {
+        const midiFilePath = '../pages/Faded.mid'; // Path to the MIDI file
 
-        recorder.ondataavailable = (e) => {
-            chunksRef.current.push(e.data);
-        };
+        try {
+            // Send the MIDI file path to the backend using axios
+            const response = await httpClient.post('/comparator', { path: midiFilePath });
 
-        recorder.onstop = () => {
-            const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
-            setRecordedBlob(blob);
-            chunksRef.current = [];
-            const url = window.URL.createObjectURL(blob);
-            setAudioURL(url);
+            // Assuming the response contains comparison results and visualization (base64 image)
+            console.log('Comparison result received:', response.data);
 
-            // Stop microphone stream
-            mediaStream.getTracks().forEach((track) => track.stop());
-            streamRef.current = null;
-            setCanRecord(false);
-            setIsRecording(false);
-        };
+            // Set the comparison results and visualization
+            setComparisonResults(response.data.accuracies);
+            setVisualization(response.data.visualization);
 
-        setCanRecord(true);
-    };
-
-    const toggleMic = () => {
-        if (isRecording) {
-            // Stop recording
-            recorderRef.current.stop();
-            setIsRecording(false);
-        } else {
-            // Start recording
-            if (!canRecord) {
-                navigator.mediaDevices.getUserMedia({ audio: true })
-                    .then(setupStream)
-                    .then(() => {
-                        recorderRef.current.start();
-                        setIsRecording(true);
-                    })
-                    .catch((err) => {
-                        console.error('Error accessing microphone:', err);
-                        alert('Could not access microphone. Please check your settings.');
-                    });
-            } else {
-                recorderRef.current.start();
-                setIsRecording(true);
-            }
+            alert('Comparison completed! Check the comparison results below.');
+            setFileSent(true);
+        } catch (error) {
+            console.error('Error sending MIDI file for comparison:', error);
+            alert(`An error occurred: ${error.message}`);
         }
-    };
-
-    const analyzeAudio = () => {
-        if (!recordedBlob) {
-            console.error('No audio recorded to analyze');
-            alert('Please record audio before analyzing.');
-            return;
-        }
-
-        console.log('Analyzing audio...');
-        const formData = new FormData();
-        formData.append('audio', recordedBlob, 'recording.ogg');
-
-        fetch('/converter', {
-            method: 'POST',
-            body: formData,
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.blob();
-            })
-            .then((midiBlob) => {
-                const midiURL = window.URL.createObjectURL(midiBlob);
-                const link = document.createElement('a');
-                link.href = midiURL;
-                link.download = 'converted_audio.mid';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                console.log('MIDI file downloaded successfully');
-            })
-            .catch((error) => {
-                console.error('Error analyzing audio:', error);
-                alert('An error occurred while analyzing the audio. Please try again.');
-            });
     };
 
     return (
         <>
-        <Header />
+            <Header />
             <section className="bg-craft_grey h-screen overflow-y-scroll px-24 py-32">
-                <h2 className="text-primary">Compare audio</h2>
+                <h2 className="text-primary">MIDI Comparator</h2>
 
-      {/* Original Track Player */}
-      <div className="player_interface px-3 flex gap-4 mb-4 items-center">
-        <h4 className="text-primary w-44">Original Track</h4>
-        <div className="flex gap-4">
-          <button className="btn-default">PLAY</button>
-          <button className="btn-default">PAUSE</button>
-        </div>
-      </div>
-
-                {/* User Track Recorder and Analyzer */}
                 <div className="input_interface border border-primary px-3 flex gap-4 items-center mb-4">
-                    <h4 className="text-primary w-44">Your Track</h4>
-                    <div className="flex gap-4">
-                        <button id="mic" className="btn-default" onClick={toggleMic}>
-                            {isRecording ? 'Stop Recording' : 'Record'}
-                        </button>
-                        <button id="analyze" className="btn-alter-default" onClick={analyzeAudio}>Analyze</button>
-                        <audio className="playback ml-8" controls src={audioURL}></audio>
-                    </div>
+                    <button className="btn-default" onClick={sendMidiToBackend} disabled={fileSent}>
+                        {fileSent ? 'File Sent' : 'Send MIDI for Comparison'}
+                    </button>
                 </div>
 
-      {/* Analysis Output Interface */}
-      <div className="output_interface border border-primary rounded-3xl px-3">
-        <h4 className="text-primary w-44">Score</h4>
-        <div className="flex gap-4"></div>
-        <h4 className="text-primary w-44">Graph</h4>
-        <div className="flex gap-4"></div>
-      </div>
-    </section>
-          </>
-  );
-};
+                {/* Analysis Output Interface */}
+                {comparisonResults && (
+                    <div className="output_interface border border-primary rounded-3xl px-3">
+                        <h4 className="text-primary w-44">Comparison Results</h4>
+                        <div className="comparison-results">
+                            {comparisonResults.map((segment, index) => (
+                                <div key={index} className="segment-result mb-4">
+                                    <h5>{segment.segment}</h5>
+                                    <p>Pitch Accuracy: {segment.pitch_accuracy}%</p>
+                                    <p>Tempo Accuracy: {segment.tempo_accuracy}%</p>
+                                    <p>Dynamics Accuracy: {segment.dynamics_accuracy}%</p>
+                                    <p>Rhythm Accuracy: {segment.rhythm_accuracy}%</p>
+                                </div>
+                            ))}
+                        </div>
 
+                        <h4 className="text-primary w-44">Graph</h4>
+                        <div className="graph">
+                            {visualization ? (
+                                <img src={`data:image/png;base64,${visualization}`} alt="MIDI Comparison Graph" />
+                            ) : (
+                                <p>No graph available</p>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </section>
+        </>
+    );
+}
