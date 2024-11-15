@@ -1,21 +1,26 @@
 import app
 import pretty_midi
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 
 
 #Function to load MIDI files and extract note and tempo information
 def load_midi(file_path):
+    print("load midi mei aa chuka")
     midi_file = pretty_midi.PrettyMIDI(file_path)
     notes = []
-
+    print("load midi mei aa chuka2")
     for instrument in midi_file.instruments:
         for note in instrument.notes:
             notes.append((note.pitch, note.start, note.end, note.velocity))
 
     # Extract tempo information (times and tempos)
     times, tempos = midi_file.get_tempo_changes()
+    print("load midi mei aa chuka3")
 
     # Return notes, tempos, and total length of the MIDI file
     return notes, tempos, times, midi_file.get_end_time()
@@ -54,6 +59,7 @@ def get_segment_average_tempo(tempos, times, segment_start, segment_end):
 # Function to calculate and print accuracies per segment
 def compare_accuracies_per_segment(original_notes, played_notes, original_tempos, played_tempos, original_times,
                                    played_times, segment_duration, max_length, tolerance=0.05):
+    results = []
     num_segments = int(max_length // segment_duration)
     for i in range(num_segments):
         start_time = i * segment_duration
@@ -109,31 +115,118 @@ def compare_accuracies_per_segment(original_notes, played_notes, original_tempos
         print(f"  Dynamics Accuracy: {dynamics_accuracy:.2f}%")
         print(f"  Rhythm Accuracy: {rhythm_accuracy:.2f}%\n")
 
+        segment_result = {
+            "segment": f"Segment {i + 1} ({start_time:.2f}s - {end_time:.2f}s)",
+            "pitch_accuracy": pitch_accuracy,
+            "tempo_accuracy": tempo_accuracy,
+            "dynamics_accuracy": dynamics_accuracy,
+            "rhythm_accuracy": rhythm_accuracy
+        }
+        results.append(segment_result)
+    return results
 
-# Function to visualize all MIDI notes together (no segmentation)
+
+
+# def visualize_all_midi_notes(original_notes, played_notes, max_length):
+#     # Set the dark mode style for the plot
+#     plt.style.use('dark_background')
+#
+#     fig, ax = plt.subplots(figsize=(12, 6))
+#
+#     # Ensure original and played notes are NumPy arrays for compatibility
+#     original_notes = np.array(original_notes, dtype=[('pitch', 'i4'), ('start', 'f4'), ('end', 'f4'), ('velocity', 'i4')])
+#     played_notes = np.array(played_notes, dtype=[('pitch', 'i4'), ('start', 'f4'), ('end', 'f4'), ('velocity', 'i4')])
+#
+#     # Plot original MIDI notes in blue
+#     for note in original_notes:
+#         ax.add_patch(plt.Rectangle((note['start'], note['pitch'] - 0.5), note['end'] - note['start'], 1, color='#0000FF', alpha=0.7))
+#
+#     # Plot played MIDI notes in red
+#     for note in played_notes:
+#         ax.add_patch(plt.Rectangle((note['start'], note['pitch'] - 0.5), note['end'] - note['start'], 1, color='#D30000', alpha=0.7))
+#
+#     # Plot overlapping notes in green (where they match)
+#     for original_note in original_notes:
+#         for played_note in played_notes:
+#             if original_note['pitch'] == played_note['pitch'] and max(original_note['start'], played_note['start']) < min(original_note['end'], played_note['end']):
+#                 overlap_start = max(original_note['start'], played_note['start'])
+#                 overlap_end = min(original_note['end'], played_note['end'])
+#                 ax.add_patch(
+#                     plt.Rectangle((overlap_start, original_note['pitch'] - 0.5), overlap_end - overlap_start, 1, color="#6200EA", alpha=0.7))
+#
+#     ax.set_xlabel('Time (s)', color='white')
+#     ax.set_ylabel('MIDI Pitch', color='white')
+#     plt.title('MIDI Notes Visualization (Original in Blue, Played in Red, Overlap in Purple)', color='white')
+#     plt.xlim(0, max_length)
+#     plt.ylim(0, 128)  # MIDI pitch range is 0-127
+#
+#     # Customize ticks for dark mode
+#     ax.tick_params(axis='x', colors='white')
+#     ax.tick_params(axis='y', colors='white')
+#
+#     print("params done\n")
+#
+#     # Save the figure to a file in a valid directory for Flask to access
+#     # Absolute path to ensure Flask can access it
+#     base_dir = os.path.abspath(os.path.dirname(__file__))  # Get the current directory where this script is located
+#     visualization_dir = os.path.join(base_dir, 'static', 'visualizations')
+#
+#     print("viz dir done\n")
+#
+#     # Ensure the directory exists
+#     if not os.path.exists(visualization_dir):
+#         os.makedirs(visualization_dir)
+#
+#     # Absolute path for the saved image
+#     visualization_path = os.path.join(visualization_dir, 'visualization.png')
+#
+#     print("viz path done\n")
+#
+#     # Save the plot
+#     plt.savefig(visualization_path, bbox_inches='tight')  # Use bbox_inches='tight' to avoid cutting off parts of the plot
+#
+#     print("viz save done")
+#
+#     return visualization_path
+
+
+
 def visualize_all_midi_notes(original_notes, played_notes, max_length):
-    # Set the dark mode style
+    # Ensure notes are numpy arrays and structured properly
+    original_notes = np.array(original_notes,
+                              dtype=[('pitch', 'i4'), ('start', 'f4'), ('end', 'f4'), ('velocity', 'i4')])
+    played_notes = np.array(played_notes, dtype=[('pitch', 'i4'), ('start', 'f4'), ('end', 'f4'), ('velocity', 'i4')])
+
+    # Set the dark mode style for the plot
     plt.style.use('dark_background')
 
     fig, ax = plt.subplots(figsize=(12, 6))
 
     # Plot original MIDI notes in blue
-    for pitch, start, end, velocity in original_notes:
+    for note in original_notes:
+        start = float(note[1])  # Ensure start is a float
+        end = float(note[2])  # Ensure end is a float
+        pitch = int(note[0])  # Ensure pitch is an integer
         ax.add_patch(plt.Rectangle((start, pitch - 0.5), end - start, 1, color='#0000FF', alpha=0.7))
 
     # Plot played MIDI notes in red
-    for pitch, start, end, velocity in played_notes:
+    for note in played_notes:
+        start = float(note[1])  # Ensure start is a float
+        end = float(note[2])  # Ensure end is a float
+        pitch = int(note[0])  # Ensure pitch is an integer
         ax.add_patch(plt.Rectangle((start, pitch - 0.5), end - start, 1, color='#D30000', alpha=0.7))
 
     # Plot overlapping notes in green (where they match)
-    for pitch, start, end, velocity in original_notes:
-        for played_pitch, played_start, played_end, played_velocity in played_notes:
-            if pitch == played_pitch and max(start, played_start) < min(end, played_end):
-                overlap_start = max(start, played_start)
-                overlap_end = min(end, played_end)
+    for original_note in original_notes:
+        for played_note in played_notes:
+            if original_note['pitch'] == played_note['pitch'] and max(original_note['start'],
+                                                                      played_note['start']) < min(original_note['end'],
+                                                                                                  played_note['end']):
+                overlap_start = max(original_note['start'], played_note['start'])
+                overlap_end = min(original_note['end'], played_note['end'])
                 ax.add_patch(
-                    plt.Rectangle((overlap_start, pitch - 0.5), overlap_end - overlap_start, 1, color="#6200EA",
-                                  alpha=0.7))
+                    plt.Rectangle((overlap_start, original_note['pitch'] - 0.5), overlap_end - overlap_start, 1,
+                                  color="#6200EA", alpha=0.7))
 
     ax.set_xlabel('Time (s)', color='white')
     ax.set_ylabel('MIDI Pitch', color='white')
@@ -145,11 +238,27 @@ def visualize_all_midi_notes(original_notes, played_notes, max_length):
     ax.tick_params(axis='x', colors='white')
     ax.tick_params(axis='y', colors='white')
 
-    # Save the plot as an SVG, ensuring no transparency issues
-    plt.savefig('midi_visualization.svg', format='svg', dpi=300, facecolor=fig.get_facecolor())
+    # Absolute path to the directory where the image will be saved
+    base_dir = os.path.abspath(os.path.dirname(__file__))  # Current script's directory
+    visualization_dir = os.path.join(base_dir, '../static', 'visualizations')
 
-    # Show the plot
-    return 'midi_visualization.svg'
+    # Ensure the directory exists
+    if not os.path.exists(visualization_dir):
+        os.makedirs(visualization_dir)
+
+    # Absolute path for the saved image
+    visualization_path = os.path.join(visualization_dir, 'visualization.svg')  # Save as SVG
+
+    # Try to save the plot and catch potential errors
+    try:
+        # Save the figure as an SVG
+        plt.savefig(visualization_path, format='svg', bbox_inches='tight')  # Save as SVG
+        plt.close(fig)  # Close the figure to free memory
+        print(f"Visualization saved successfully at {visualization_path}.")
+    except Exception as e:
+        print(f"Error saving the visualization: {e}")
+
+    return visualization_path
 
 
 # Function to compare MIDI notes, calculate accuracies, and visualize them
@@ -165,4 +274,3 @@ def compare_midi_notes(original_notes, played_notes, original_tempos, played_tem
 
     # Visualize the notes
     visualize_all_midi_notes(original_notes, played_notes, max_length)
-

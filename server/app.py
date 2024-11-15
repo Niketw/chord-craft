@@ -13,6 +13,8 @@ import pretty_midi
 import matplotlib.pyplot as plt
 import numpy as np
 from comparator import *
+import base64
+from songs import get_midi_from_database, MidiStorage, store_played_midi, get_played_midi_from_database
 
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -169,27 +171,64 @@ def logout_user():
     session.pop("user_id")
     return "200"
 
+
 @app.route("/comparator", methods=["POST"])
 def comparator():
-    # Load MIDI files
-    original_file = 'faded.mid'  # Pulled from database
-    played_file = 'faded.mid'  # User file
+    if "played_file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    played_file = request.files["played_file"]
+    temp_file_path = os.path.join("temp", played_file.filename)
+    played_file.save(temp_file_path)
+    played_file = store_played_midi(temp_file_path)
+    os.remove(temp_file_path)
+
+    song_name = request.form.get('song_name')
+    try:
+        original_file = get_midi_from_database(song_name)
+    except FileNotFoundError:
+        return jsonify({"error": f"Original song '{song_name}' not found in the database."}), 404
+
+    played_file_name = played_file.filename
+    if "filename=" in played_file_name:
+        played_file_name = played_file_name.split("filename=")[1][:-1]
+
+    try:
+        played_file = get_played_midi_from_database(played_file_name)
+    except FileNotFoundError:
+        return jsonify({"error": f"Played song '{played_file_name}' not found in the database."}), 404
 
     original_notes, original_tempos, original_times, original_length = load_midi(original_file)
     played_notes, played_tempos, played_times, played_length = load_midi(played_file)
 
-    # Determine the shorter length between the two soundtracks
     max_length = min(original_length, played_length)
-
-    # Define segment duration (e.g., 3 seconds)
     segment_duration = 3.0
 
-    # Compare MIDI notes, print accuracies, and visualize
-    compare_midi_notes(original_notes, played_notes, original_tempos, played_tempos, original_times, played_times,
-                       segment_duration, max_length)
-    return jsonify({"message": "Comparator is working."}), 200
+    results = compare_accuracies_per_segment(
+        original_notes, played_notes, original_tempos, played_tempos, original_times,
+        played_times, segment_duration, max_length
+    )
+
+    visualization_path = visualize_all_midi_notes(original_notes, played_notes, max_length)
+
+    with open(visualization_path, "rb") as image_file:
+        visualization_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+    return jsonify({
+        "accuracies": results,
+        "visualization": visualization_base64
+    })
 
 
+@app.route('/songs', methods=['GET'])
+def get_songs():
+    try:
+        with app.app_context():
+            songs = MidiStorage.query.all()  # Get all songs from the database
+            song_names = [song.filename for song in songs]  # Extract song names
+        return jsonify({"songs": song_names})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 

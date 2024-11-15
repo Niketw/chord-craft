@@ -28,3 +28,13 @@ class MidiStorage(db.Model):
 
     def __repr__(self):
         return f"<MidiStorage id={self.id}, filename={self.filename}>"
+
+
+# Define PlayedMidi model for storing MIDI files
+class PlayedMidi(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(200), unique=True, nullable=False)
+    file_data = db.Column(db.LargeBinary, nullable=False)
+
+    def __repr__(self):
+        return f"<PlayedMidi id={self.id}, filename={self.filename}>"
