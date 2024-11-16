@@ -181,7 +181,7 @@ def comparator():
     temp_file_path = os.path.join("temp", played_file.filename)
     played_file.save(temp_file_path)
     played_file = store_played_midi(temp_file_path)
-    os.remove(temp_file_path)
+
 
     song_name = request.form.get('song_name')
     try:
@@ -213,6 +213,8 @@ def comparator():
 
     with open(visualization_path, "rb") as image_file:
         visualization_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+    os.remove(temp_file_path)
 
     return jsonify({
         "accuracies": results,
