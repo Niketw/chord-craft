@@ -1,4 +1,4 @@
-import Header_logo from '../vectors/header_logo.svg';
+import Header_logo from '../vectors/newsmalllogo.svg';
 import log_out from '../vectors/logout.svg';
 import httpClient from "../HttpClient.js";
 import {useEffect, useState} from "react";
@@ -31,9 +31,9 @@ export default function Header(){
                     <a href="/"><img src={Header_logo}/></a>
                 </div>
                 <div className="flex gap-8">
-                    <a href="/library" className="text-gray-400 hover:text-orange-400 transition-colors">Library</a>
-                    <a href="/trending" className="text-gray-400 hover:text-orange-400 transition-colors">Trending</a>
-                    <a href="/about" className="text-gray-400 hover:text-orange-400 transition-colors">About</a>
+                    <a href="/library" className="text-gray-400 hover:text-pink-400 transition-colors">Library</a>
+                    <a href="/trending" className="text-gray-400 hover:text-pink-400 transition-colors">Trending</a>
+                    <a href="/about" className="text-gray-400 hover:text-pink-400 transition-colors">About</a>
                 </div>
                 {user ? 
                     <div className="relative group">
