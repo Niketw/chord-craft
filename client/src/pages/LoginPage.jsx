@@ -1,5 +1,5 @@
 import Header from '../components/Header';
-import hero_logo from '../vectors/hero_logo.svg';
+import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
 
@@ -33,7 +33,7 @@ export default function Login() {
             <Header/>
             <div className='flex bg-craft_grey text-primary min-h-[542px] items-center'>
                 <div className="working-container px-28 grid gap-5 justify-center justify-items-center">
-                    <img src={hero_logo} className="w-36"/>
+                    <img src={newlogo} className="w-36"/>
                     <form onSubmit={logInUser} method="post" className="grid grid-rows-3 gap-3 items-center">
                         <div>
                             <label htmlFor="email" className='mb-1'>Email</label>

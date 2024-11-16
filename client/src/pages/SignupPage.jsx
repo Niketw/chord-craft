@@ -1,5 +1,5 @@
 import Header from '../components/Header';
-import hero_logo from '../vectors/hero_logo.svg';
+import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
 
@@ -39,7 +39,7 @@ export default function Signup() {
     
             <div className='flex bg-craft_grey text-primary min-h-[542px] items-center overflow-clip rounded-2xl'>
                 <div className="working-container px-28 grid gap-5 justify-center justify-items-center">
-                    <img src={hero_logo} className="w-36"/>
+                    <img src={newlogo} className="w-36"/>
                     <form onSubmit={registerUser} className="grid grid-rows-4 gap-3 items-center">
                         <div>
                             <label htmlFor="name" className='mb-1'>Name</label>
