@@ -204,7 +204,7 @@ def comparator():
     max_length = min(original_length, played_length)
     segment_duration = 3.0
 
-    results = compare_accuracies_per_segment(
+    results, visualization2_path = compare_accuracies_per_segment(
         original_notes, played_notes, original_tempos, played_tempos, original_times,
         played_times, segment_duration, max_length
     )
@@ -214,11 +214,15 @@ def comparator():
     with open(visualization_path, "rb") as image_file:
         visualization_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
+    with open(visualization2_path, "rb") as image_file:
+        visualization2_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
     os.remove(temp_file_path)
 
     return jsonify({
-        "accuracies": results,
-        "visualization": visualization_base64
+        "accuracy": results,
+        "visualization": visualization_base64,
+        "visualization2": visualization2_base64
     })
 
 

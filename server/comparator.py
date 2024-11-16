@@ -57,9 +57,15 @@ def get_segment_average_tempo(tempos, times, segment_start, segment_end):
     return weighted_tempo_sum / total_duration if total_duration > 0 else tempos[0]
 
 # Function to calculate and print accuracies per segment
-def compare_accuracies_per_segment(original_notes, played_notes, original_tempos, played_tempos, original_times,
-                                   played_times, segment_duration, max_length, tolerance=0.05):
-    results = []
+def compare_accuracies_per_segment(
+    original_notes, played_notes, original_tempos, played_tempos, original_times,
+    played_times, segment_duration, max_length, tolerance=0.05):
+    # Initialize lists to store accuracies per segment
+    pitch_accuracies = []
+    tempo_accuracies = []
+    dynamics_accuracies = []
+    rhythm_accuracies = []
+
     num_segments = int(max_length // segment_duration)
     for i in range(num_segments):
         start_time = i * segment_duration
@@ -82,13 +88,13 @@ def compare_accuracies_per_segment(original_notes, played_notes, original_tempos
         tempo_accuracy = (1 - abs(
             original_segment_tempo - played_segment_tempo) / original_segment_tempo) * 100 if original_segment_tempo > 0 else 0
 
-        # Calculate dynamics accuracy based on velocity
+        # Calculate dynamics accuracy
         original_velocities = [note[3] for note in original_segment]
         played_velocities = [note[3] for note in played_segment]
         velocity_matches = sum(1 for vel in played_velocities if vel in original_velocities)
         dynamics_accuracy = (velocity_matches / total_notes) * 100 if total_notes > 0 else 0
 
-        # Calculate rhythm accuracy based on onset times with tolerance
+        # Calculate rhythm accuracy
         original_onsets = sorted(note[1] for note in original_segment)
         played_onsets = sorted(note[1] for note in played_segment)
 
@@ -108,23 +114,60 @@ def compare_accuracies_per_segment(original_notes, played_notes, original_tempos
 
         rhythm_accuracy = (rhythm_matches / len(played_onsets)) * 100 if len(played_onsets) > 0 else 0
 
-        # Print results
-        print(f"Segment {i + 1} ({start_time:.2f}s - {end_time:.2f}s):")
-        print(f"  Pitch Accuracy: {pitch_accuracy:.2f}%")
-        print(f"  Tempo Accuracy: {tempo_accuracy:.2f}%")
-        print(f"  Dynamics Accuracy: {dynamics_accuracy:.2f}%")
-        print(f"  Rhythm Accuracy: {rhythm_accuracy:.2f}%\n")
+        # Append accuracies to lists
+        pitch_accuracies.append(pitch_accuracy)
+        tempo_accuracies.append(tempo_accuracy)
+        dynamics_accuracies.append(dynamics_accuracy)
+        rhythm_accuracies.append(rhythm_accuracy)
 
-        segment_result = {
-            "segment": f"Segment {i + 1} ({start_time:.2f}s - {end_time:.2f}s)",
-            "pitch_accuracy": pitch_accuracy,
-            "tempo_accuracy": tempo_accuracy,
-            "dynamics_accuracy": dynamics_accuracy,
-            "rhythm_accuracy": rhythm_accuracy
-        }
-        results.append(segment_result)
-    return results
+    # Plot accuracies as line graphs
+    plt.figure(figsize=(10, 6))
+    x = np.arange(1, num_segments + 1)
+    plt.plot(x, pitch_accuracies, label='Pitch Accuracy', marker='o')
+    plt.plot(x, tempo_accuracies, label='Tempo Accuracy', marker='o')
+    plt.plot(x, dynamics_accuracies, label='Dynamics Accuracy', marker='o')
+    plt.plot(x, rhythm_accuracies, label='Rhythm Accuracy', marker='o')
+    plt.xlabel('Segment Number')
+    plt.ylabel('Accuracy (%)')
+    plt.title('Accuracies per Segment')
+    plt.legend()
+    plt.grid(True)
 
+    # Absolute path to the directory where the image will be saved
+    base_dir = os.path.abspath(os.path.dirname(__file__))  # Current script's directory
+    visualization_dir = os.path.join(base_dir, '../static', 'visualizations')
+
+    # Ensure the directory exists
+    if not os.path.exists(visualization_dir):
+        os.makedirs(visualization_dir)
+
+    # Absolute path for the saved image
+    visualization_path = os.path.join(visualization_dir, 'visualization2.svg')  # Save as SVG
+
+    # Try to save the plot and catch potential errors
+    try:
+        # Save the figure as an SVG
+        plt.savefig(visualization_path, format='svg', bbox_inches='tight')  # Save as SVG
+        plt.close()  # Close the figure to free memory
+        print(f"Visualization saved successfully at {visualization_path}.")
+    except Exception as e:
+        print(f"Error saving the visualization: {e}")
+
+    # Calculate overall accuracies
+    overall_pitch_accuracy = np.mean(pitch_accuracies)
+    overall_tempo_accuracy = np.mean(tempo_accuracies)
+    overall_dynamics_accuracy = np.mean(dynamics_accuracies)
+    overall_rhythm_accuracy = np.mean(rhythm_accuracies)
+
+    # Return overall accuracies as text
+    overall_accuracy_text = {
+        "pitch_accuracy": overall_pitch_accuracy,
+        "tempo_accuracy": overall_tempo_accuracy,
+        "dynamics_accuracy": overall_dynamics_accuracy,
+        "rhythm_accuracy": overall_rhythm_accuracy,
+    }
+    print(overall_accuracy_text)
+    return overall_accuracy_text, visualization_path
 
 
 # def visualize_all_midi_notes(original_notes, played_notes, max_length):

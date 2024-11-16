@@ -428,6 +428,7 @@ export default function Recorder() {
     const [fileSent, setFileSent] = useState(false);
     const [comparisonResults, setComparisonResults] = useState(null);
     const [visualization, setVisualization] = useState(null);
+    const [visualization2, setVisualization2] = useState(null);
     const [songs, setSongs] = useState([]);  // For storing the list of available songs
     const [selectedSong, setSelectedSong] = useState('');  // To track the selected song
     const [newSong, setNewSong] = useState(null);  // To store the uploaded new song file
@@ -490,10 +491,11 @@ export default function Recorder() {
         });
 
         console.log("Request sent.");
-
-        if (Array.isArray(response.data.accuracies)) {
-            setComparisonResults(response.data.accuracies);
+        console.log(response.data)
+        if (response.data.accuracy) {
+        setComparisonResults(response.data.accuracy);
             setVisualization(response.data.visualization);
+            setVisualization2(response.data.visualization2);
         } else {
             console.error("Error: Expected 'accuracies' to be an array.");
             alert("There was an issue with the comparison data.");
@@ -546,21 +548,23 @@ export default function Recorder() {
                     <div className="output_interface border border-primary rounded-3xl px-3">
                         <h4 className="text-primary w-44">Comparison Results</h4>
                         <div className="comparison-results">
-                            {comparisonResults.map((segment, index) => (
-                                <div key={index} className="segment-result mb-4">
-                                    <h5>{segment.segment}</h5>
-                                    <p>Pitch Accuracy: {segment.pitch_accuracy}%</p>
-                                    <p>Tempo Accuracy: {segment.tempo_accuracy}%</p>
-                                    <p>Dynamics Accuracy: {segment.dynamics_accuracy}%</p>
-                                    <p>Rhythm Accuracy: {segment.rhythm_accuracy}%</p>
-                                </div>
-                            ))}
+                            <p>Pitch Accuracy: {comparisonResults.pitch_accuracy}%</p>
+                            <p>Tempo Accuracy: {comparisonResults.tempo_accuracy}%</p>
+                            <p>Dynamics Accuracy: {comparisonResults.dynamics_accuracy}%</p>
+                            <p>Rhythm Accuracy: {comparisonResults.rhythm_accuracy}%</p>
                         </div>
 
                         <h4 className="text-primary w-44">Graph</h4>
                         <div className="graph">
                             {visualization ? (
                                 <img src={`data:image/svg+xml;base64,${visualization}`} alt="MIDI Comparison Graph" />
+                            ) : (
+                                <p>No graph available</p>
+                            )}
+                        </div>
+                        <div className="graph">
+                            {visualization2 ? (
+                                <img src={`data:image/svg+xml;base64,${visualization2}`} alt="MIDI Accuracies Graph" />
                             ) : (
                                 <p>No graph available</p>
                             )}
