@@ -29,25 +29,40 @@ export default function Landing() {
     return (
         <>
         <Header />
-        <section className="bg-craft_grey overflow-x-clip h-screen flex flex-col">
-
-            <div className="hero grow grid items-center pl-32 relative  grid-cols-2 min-h-[600px]">
-                <img src={Hero_logo}/>
-                <img src={Ellipse} className="absolute right-0 bottom-0 translate-x-[56%] translate-y-[33%] w-3/5 lg:w-1/2 transition-all" />
+        <section className="bg-white h-screen relative overflow-hidden">
+            {/* Background image */}
+            <div className="absolute inset-0 w-full h-full">
+                <img src="https://i.ibb.co/26nvzhX/dude.jpg" className="w-full h-full object-cover"/>
+                <div className="absolute inset-0 bg-white bg-opacity-50"></div>
             </div>
 
-            <div className='self-center absolute bottom-24'>
-
-                {user ? <h4 className="text-primary">Welcome {user.name} </h4>
-                 :
-                 <button className='btn-default' onClick={getStarted}> Get Started </button>}
-
+            {/* Hero content overlay */}
+            <div className="relative h-full">
+                <div className="w-full md:w-1/2 h-full flex items-center justify-center backdrop-blur-sm bg-black/70 p-8 rounded-br-3xl">
+                    <div className="text-center">
+                        {user ? (
+                            <>
+                                <h4 className="text-primary text-xl mb-2">Welcome, {user.name}</h4>
+                                <p className="text-gray-400 mb-6">Pick where you left off</p>
+                                <div>
+                                    <a href="/recorder">
+                                        <button className="btn-alter-default rounded-full hover:rounded-full">Compare audio</button>
+                                    </a>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="hero grid items-center relative grid-cols-1 min-h-[400px]">
+                                    <img src={Hero_logo} className="max-w-full h-auto"/>
+                                </div>
+                                <button className='btn-default rounded-full mb-6' onClick={getStarted}>Get Started</button>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
-
-            <a href="/recorder"> <button className="btn-alter-default">Compare audio</button></a>
-
         </section>
-        <section className="bg-craft_grey h-screen">
+        <section className="bg-white h-screen">
 
         </section>
         </>
