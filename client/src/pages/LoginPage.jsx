@@ -53,7 +53,7 @@ export default function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
-                        <button className='btn-alter-default justify-self-center' type={'submit'}>Login</button>
+                        <button className='btn-default rounded-full mb-6 hover:bg-pink-300' type={'submit'}>Login</button>
                     </form>
                     <p className="font-light">New here? <a href="/register" className='text-action'> Register </a> </p>
                 </div>

@@ -9,7 +9,7 @@ module.exports = {
             primary: "#FFFAF7",
             secondary: "#585656",
             action: "#ff28a9",
-            craft_grey: "#262626",
+            craft_grey: "#080222",
             craft_black: "#222222"
             
         },

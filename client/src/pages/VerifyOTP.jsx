@@ -38,7 +38,7 @@ export default function VerifyOTP() {
                             />
                         </div>
                         
-                        <button className='btn-alter-default justify-self-center' type="submit">Proceed</button>
+                        <button className='btn-default rounded-full mb-6 hover:bg-pink-300' type="submit">Proceed</button>
                     </form>
                     <p className="font-light">OTP sent to <span className='text-action'> email </span> </p>
                 </div>
