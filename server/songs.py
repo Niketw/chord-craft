@@ -72,7 +72,7 @@ def get_midi_from_database(song_name):
 
         if midi_file:
             # Write the binary data to a temporary file
-            temp_file_path = f"/tmp/{midi_file.filename}.mid"  # Adjust path as needed
+            temp_file_path = f"temp/{midi_file.filename}.mid"  # Adjust path as needed
             with open(temp_file_path, 'wb') as temp_file:
                 temp_file.write(midi_file.file_data)
             return temp_file_path
@@ -119,7 +119,7 @@ def get_played_midi_from_database(song_name):
 
         if midi_file:
             # Write the binary data to a temporary file
-            temp_file_path = f"/tmp/{midi_file.filename}.mid"  # Adjust path as needed
+            temp_file_path = f"temp/{midi_file.filename}.mid"  # Adjust path as needed
             with open(temp_file_path, 'wb') as temp_file:
                 temp_file.write(midi_file.file_data)
 
