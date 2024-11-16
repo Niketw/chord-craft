@@ -23,3 +23,11 @@ npm run dev
 [MAC](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-mac-os/)
 
 #### *note: make sure tools like proxifier are off
+
+#### *note: if port on opening is not at localhost:3000, force stop the ongoing process
+####       by the following commands in command prompt:
+
+#### 1. netstat -aon | findstr :3000
+#### 2. taskkill /PID <PID> /F
+
+
