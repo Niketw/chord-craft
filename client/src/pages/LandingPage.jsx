@@ -25,6 +25,8 @@ export default function Landing() {
         })();
     }, []);
 
+    //UI starts here
+
 
     return (
         <>
