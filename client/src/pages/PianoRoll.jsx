@@ -3,9 +3,9 @@ import Metronome from '../components/Metronome';
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const START_OCTAVE = 2;
-const END_OCTAVE = 6;
+const END_OCTAVE = 5;
 const PIXEL_PER_SECOND = 100;
-const NOTE_HEIGHT = 20;
+const NOTE_HEIGHT = 10;
 
 const PianoRoll = ({ midiData }) => {
   const [allNotes, setAllNotes] = useState([]);
@@ -128,28 +128,26 @@ const PianoRoll = ({ midiData }) => {
   return (
     <div>
       {/* Playback Controls */}
-      <div className="flex items-center gap-4 mb-4 p-2 bg-gray-100 rounded">
+      <div className="flex items-center gap-4 mb-1 p-2 border border-secondary text-primary">
         <div className="flex gap-2">
           <button
             onClick={isPlaying ? handlePause : handlePlay}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
+            className="px-4 py-2 btn-default">
             {isPlaying ? 'Pause' : 'Play'}
           </button>
           <button
             onClick={handleStop}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          >
+            className="px-4 py-2 btn-alter-default">
             Stop
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-sm">BPM:</label>
+          <label className="text-base">BPM:</label>
           <input
             type="number"
             value={bpm}
             onChange={(e) => setBpm(Math.max(0, Math.min(999, Number(e.target.value))))}
-            className="w-20 px-2 py-1 border rounded text-black"
+            className="w-20 px-2 py-1 border rounded"
           />
         </div>
 
@@ -162,7 +160,7 @@ const PianoRoll = ({ midiData }) => {
       </div>
 
       {/* Piano Roll */}
-      <div className="flex overflow-x-auto" ref={containerRef}>
+      <div className="flex overflow-x-auto border border-secondary" ref={containerRef}>
         {/* Piano Keys */}
         <div className="sticky left-0 z-10 bg-white">
           {allNotes.map((note) => (
@@ -170,14 +168,14 @@ const PianoRoll = ({ midiData }) => {
               key={note}
               className={`border-b border-r ${
                 note.includes('#') ? 'bg-black text-white' : 'bg-white'
-              }`}
+              } text-[5px]`}
               style={{
                 height: NOTE_HEIGHT,
                 width: 60,
                 borderRight: '1px solid #ccc'
               }}
             >
-              <span className="text-xs pl-1">{note}</span>
+              <span className="pl-1">{note}</span>
             </div>
           ))}
         </div>
