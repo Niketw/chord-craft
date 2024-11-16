@@ -24,7 +24,7 @@ export default function VerifyOTP() {
     <>
         <Header/>
         <section className="bg-craft_black h-screen grid place-items-center relative">   
-            <div className='flex bg-craft_grey text-primary min-h-[400px] items-center'>
+            <div className='flex bg-craft_grey text-primary min-h-[400px] items-center overflow-clip rounded-2xl'>
                 <div className="working-container px-20 grid gap-5 justify-center justify-items-center">
                     <img src={newlogo} className="w-36"/>
                     <form onSubmit={verifyOtp} method="post" className="grid grid-rows-2 gap-3 items-center w-72">
@@ -38,7 +38,7 @@ export default function VerifyOTP() {
                             />
                         </div>
                         
-                        <button className='btn-alter-default justify-self-center' type="submit">Proceed</button>
+                        <button className='btn-default rounded-full mb-6 hover:bg-pink-300' type="submit">Proceed</button>
                     </form>
                     <p className="font-light">OTP sent to <span className='text-action'> email </span> </p>
                 </div>
