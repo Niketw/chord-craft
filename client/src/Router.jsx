@@ -5,6 +5,7 @@ import Signup from "./pages/SignupPage";
 import VerifyOTP from "./pages/VerifyOTP";
 import NotFound from "./pages/NotFound";
 import Recorder from "./pages/Recorder.jsx";
+import Library from "./pages/Library.jsx";
 
 export default function App() {
     return (
@@ -15,6 +16,7 @@ export default function App() {
                 <Route path="/register" element={<Signup />} />
                 <Route path="/verify" element={<VerifyOTP />} />
                 <Route path="/recorder" element = {<Recorder />} />
+                <Route path="/library" element = {<Library />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

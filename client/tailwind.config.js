@@ -8,7 +8,7 @@ module.exports = {
         colors: {
             primary: "#FFFAF7",
             secondary: "#585656",
-            action: "#FF6500",
+            action: "#ff28a9",
             craft_grey: "#262626",
             craft_black: "#222222"
             

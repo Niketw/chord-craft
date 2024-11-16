@@ -66,7 +66,7 @@ export default function Landing() {
                                 <div className="hero grid items-center relative grid-cols-1 min-h-[400px]">
                                     <img src={Hero_logo} className="max-w-full h-auto"/>
                                 </div>
-                                <button className='bg-pink-500 text-white rounded-full mb-6 hover:bg-pink-300' onClick={getStarted}>Get Started</button>
+                                <button className='btn-default rounded-full mb-6 hover:bg-pink-300' onClick={getStarted}>Get Started</button>
                             </>
                         )}
                     </div>
