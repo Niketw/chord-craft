@@ -1,5 +1,5 @@
 import Header from '../components/Header';
-import hero_logo from '../vectors/hero_logo.svg';
+import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
 
@@ -26,7 +26,7 @@ export default function VerifyOTP() {
         <section className="bg-craft_black h-screen grid place-items-center relative">   
             <div className='flex bg-craft_grey text-primary min-h-[400px] items-center'>
                 <div className="working-container px-20 grid gap-5 justify-center justify-items-center">
-                    <img src={hero_logo} className="w-36"/>
+                    <img src={newlogo} className="w-36"/>
                     <form onSubmit={verifyOtp} method="post" className="grid grid-rows-2 gap-3 items-center w-72">
                         <div>
                             <label htmlFor="otp">OTP</label>
