@@ -6,6 +6,7 @@ import VerifyOTP from "./pages/VerifyOTP";
 import NotFound from "./pages/NotFound";
 import Recorder from "./pages/Recorder.jsx";
 import Library from "./pages/Library.jsx";
+import Crafter from "./pages/Crafter.jsx";
 
 
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
                 <Route path="/recorder" element = {<Recorder />} />
                 <Route path="/library" element = {<Library />} />
                 <Route path="/about" element={<NotFound />} />
-
+                <Route path="/craft" element = {<Crafter />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

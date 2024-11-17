@@ -44,6 +44,7 @@ export default function VerifyOTP() {
                             <input
                                 id="otp"
                                 type="text"
+                                name='otp'
                                 value={otp}
                                 onChange={(e) => setOTP(e.target.value)}
                             />
