@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 import Recorder from "./pages/Recorder.jsx";
 import Library from "./pages/Library.jsx";
 
+
 export default function App() {
     return (
         <BrowserRouter>
@@ -17,8 +18,11 @@ export default function App() {
                 <Route path="/verify" element={<VerifyOTP />} />
                 <Route path="/recorder" element = {<Recorder />} />
                 <Route path="/library" element = {<Library />} />
+                <Route path="/about" element={<NotFound />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
         </BrowserRouter>
     );
 };

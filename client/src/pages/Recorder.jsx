@@ -422,6 +422,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from "../components/Header.jsx";
 import httpClient from "../HttpClient.js";
+import Footer from '../components/Footer';
 
 export default function Recorder() {
     // State to track the comparison results, visualization image, and song list
@@ -572,6 +573,7 @@ export default function Recorder() {
                     </div>
                 )}
             </section>
+            <Footer />
         </>
     );
 }

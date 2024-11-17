@@ -3,6 +3,7 @@ import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
 
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Login() {
@@ -28,10 +29,19 @@ export default function Login() {
     };
 
     return (
-    
-        <section className="bg-craft_black h-screen grid place-items-center relative">
+        <section className="bg-craft_black h-screen grid place-items-center relative overflow-hidden">
+            <video 
+                className="absolute w-full h-full object-cover opacity-30"
+                autoPlay 
+                loop 
+                muted
+                playsInline
+            >
+                <source src="https://fantastic-twilight-7bfa45.netlify.app/login.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
             <Header/>
-            <div className='flex bg-craft_grey text-primary min-h-[542px] items-center overflow-clip rounded-2xl'>
+            <div className='flex bg-craft_grey text-primary min-h-[542px] items-center overflow-clip rounded-2xl relative z-10'>
                 <div className="working-container px-28 grid gap-5 justify-center justify-items-center">
                     <img src={newlogo} className="w-36"/>
                     <form onSubmit={logInUser} method="post" className="grid grid-rows-3 gap-3 items-center">
@@ -65,6 +75,7 @@ export default function Login() {
                     </p>
                 </div>
             </div>
+
         </section>
     );
 }

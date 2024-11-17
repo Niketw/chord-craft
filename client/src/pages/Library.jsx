@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import perfectImg from './perfect.jpg';
 import closerImg from './closer.jpg';
 import OneDirectionImg from './oned.jpg';
@@ -38,6 +39,7 @@ export default function Library() {
                     </div>
                 </div>
             </section>
+            <Footer />
         </>
     );
 } 

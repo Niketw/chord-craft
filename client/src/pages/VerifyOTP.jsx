@@ -3,6 +3,7 @@ import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
 
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function VerifyOTP() {
@@ -23,7 +24,17 @@ export default function VerifyOTP() {
     return (
     <>
         <Header/>
-        <section className="bg-craft_black h-screen grid place-items-center relative">   
+        <section className="bg-craft_black h-screen grid place-items-center relative">
+        <video 
+                className="absolute w-full h-full object-cover opacity-30"
+                autoPlay 
+                loop 
+                muted
+                playsInline
+            >
+                <source src="https://fantastic-twilight-7bfa45.netlify.app/newusers.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
             <div className='flex bg-craft_grey text-primary min-h-[400px] items-center overflow-clip rounded-2xl'>
                 <div className="working-container px-20 grid gap-5 justify-center justify-items-center">
                     <img src={newlogo} className="w-36"/>
@@ -44,6 +55,7 @@ export default function VerifyOTP() {
                 </div>
             </div>
         </section>
+
         </>
     );
 }

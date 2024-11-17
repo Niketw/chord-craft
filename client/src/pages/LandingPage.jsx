@@ -4,6 +4,7 @@ import Ellipse from '../vectors/Ellipse 2.svg';
 import { useState, useEffect } from 'react';
 
 import httpClient from "../HttpClient.js";
+import Footer from '../components/Footer';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -41,7 +42,7 @@ export default function Landing() {
                         loop 
                         className="w-full h-full object-cover"
                     >
-                        <source src="https://r7---sn-ci5gup-a3vl.googlevideo.com/videoplayback?expire=1731806448&ei=kPA4Z-yMELf5sfIPqPDzuAg&ip=209.141.44.95&id=o-AOJgoujGbJvSZRtiLj_SgFSGNQOC5OGUVPWZJavQzylA&itag=137&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C278%2C394%2C395%2C396%2C397%2C398%2C399&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&rms=au%2Cau&siu=1&bui=AQn3pFQPlRTwijlQeobntkacJoIz6wImt7GjIvypTaOI3jjKcaFhrUj7phJsYSEwNDwH649wMQ&spc=qtApAYoZ2FS75-VJ1i6oJypdF0SWvojHotlr4HHjSMbHP3RUzstbXwtzkDAH2NmUepGt1Bn6Sg&vprv=1&svpuc=1&mime=video%2Fmp4&ns=9VvnuKDySrZH1S3yGQJdohUQ&rqh=1&gir=yes&clen=28416610&dur=265.680&lmt=1706051176682421&keepalive=yes&fexp=51299154%2C51312688%2C51326932&c=WEB&sefc=1&txp=4535434&n=fz-r7rVq4V94ug&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cxpc%2Csiu%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRQIgFhnciFnKllhYyeLHykvTTm_QlkyaNWkw2RbzyvdL24ECIQDcVFfVFJOP1aXjR9RC8QFAI2efxooLkvfdmEbxabQVyg%3D%3D&pot=Mltlg9QZjrU-nmW7Oxn4fzuJ_rgGFC-sZMjGMOp8236t56_8LT_yi8rcdKHcs-WGzoXyDsLoXbyedJsv7AN6KrGX9pUE5Tih-pH_oNW7zX4DwDK63w15R7dT9_IE&range=0-&cms_redirect=yes&met=1731784858,&mh=HD&mip=2401:4900:5aa9:1572:1153:5e08:f515:d164&mm=31&mn=sn-ci5gup-a3vl&ms=au&mt=1731784394&mv=m&mvi=7&pl=44&lsparams=met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AGluJ3MwRAIgJAb1AQKYrpTHO4KjX3a1OC_EFDDccwt0EANqDzGt1scCIEQg1DQs2ZzoAPm05dTEgiteZKkw9ULWII_BKsAOPqDT" type="video/mp4" />
+                        <source src="https://fantastic-twilight-7bfa45.netlify.app/newusers.mp4" type="video/mp4" />
                     </video>
                 )}
                 {user && (
@@ -51,15 +52,15 @@ export default function Landing() {
 
             {/* Hero content overlay */}
             <div className="relative h-full">
-                <div className="w-full md:w-1/2 h-full flex items-center justify-center backdrop-blur-sm bg-black/70 p-8 rounded-br-3xl">
+                <div className="w-full md:w-1/2 h-full flex items-center justify-center backdrop-blur-sm bg-violet-950/70 p-8 rounded-br-3xl">
                     <div className="text-center">
                         {user ? (
                             <>
                                 <h4 className="text-primary text-xl mb-2">Welcome, {user.name}</h4>
-                                <p className="text-gray-400 mb-6">Pick where you left off</p>
+                                <p className="text-gray-200 mb-6">Pick where you left off</p>
                                 <div>
                                     <a href="/recorder">
-                                        <button className="btn-alter-default rounded-full hover:rounded-full hover:bg-pink-300">Compare audio</button>
+                                        <button className="btn-alter-default rounded-full hover:rounded-full bg-pink-600">Compare audio</button>
                                     </a>
                                 </div>
                             </>
@@ -75,9 +76,74 @@ export default function Landing() {
                 </div>
             </div>
         </section>
-        <section className="bg-white h-screen">
+
+        <section className="bg-white h-screen relative">
+            {/* Glow effect */}
+            <div className="absolute top-0 left-0 w-96 h-96 -translate-x-1/2 -translate-y-1/2 bg-pink-500/30 rounded-full blur-3xl"></div>
+            <h1 className="text-6xl font-extrabold text-center pt-16 bg-gradient-to-r from-pink-100 to-blue-100 rounded-bl-3xl rounded-br-3xl">About Us</h1>
+            <div className="flex h-[calc(100%-8rem)]">
+                {/* Left half - Team info */}
+                <div className="w-1/2 p-12 flex items-center">
+                    <p className="text-lg leading-relaxed text-gray-700 text-balance text-pretty" style={{fontSize: 'clamp(1rem, 2vw, 1.5rem)'}}>
+                        We are a passionate team of musicians and developers dedicated to helping musicians improve their craft. 
+                        Our innovative platform combines cutting-edge technology with musical expertise to provide detailed analysis 
+                        and feedback on your performances. Whether you're a beginner learning your first piece or an advanced musician 
+                        fine-tuning your skills, our tools are designed to help you reach your full potential. We believe in the power 
+                        of technology to enhance musical education and make learning more accessible and engaging for everyone.
+                    </p>
+                </div>
+
+                {/* Right half - Image slideshow */}
+                <div className="w-1/2 p-12 relative overflow-hidden rounded-2xl">
+                    <div className="slideshow h-full relative">
+                        <img src="https://picsum.photos/800/500" alt="Team at work" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade1 12s infinite'}}/>
+                        <img src="https://picsum.photos/800/500" alt="Recording session" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade2 12s infinite'}}/>
+                        <img src="https://picsum.photos/800/500" alt="Development meeting" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade3 12s infinite'}}/>
+                        <img src="https://picsum.photos/800/500" alt="Music practice" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade4 12s infinite'}}/>
+                        <img src="https://picsum.photos/800/500" alt="Team collaboration" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade5 12s infinite'}}/>
+                        <img src="https://picsum.photos/800/500" alt="Studio setup" className="w-full h-full object-cover rounded-2xl absolute transition-opacity duration-1000 ease-in-out" style={{animation: 'fade6 12s infinite'}}/>
+                    </div>
+                    <style>
+                        {`
+                            @keyframes fade1 {
+                                0%, 16.66% { opacity: 1; }
+                                16.67%, 100% { opacity: 0; }
+                            }
+                            @keyframes fade2 {
+                                0% { opacity: 0; }
+                                16.66%, 33.32% { opacity: 1; }
+                                33.33%, 100% { opacity: 0; }
+                            }
+                            @keyframes fade3 {
+                                0%, 33.32% { opacity: 0; }
+                                33.33%, 49.99% { opacity: 1; }
+                                50%, 100% { opacity: 0; }
+                            }
+                            @keyframes fade4 {
+                                0%, 49.99% { opacity: 0; }
+                                50%, 66.65% { opacity: 1; }
+                                66.66%, 100% { opacity: 0; }
+                            }
+                            @keyframes fade5 {
+                                0%, 66.65% { opacity: 0; }
+                                66.66%, 83.32% { opacity: 1; }
+                                83.33%, 100% { opacity: 0; }
+                            }
+                            @keyframes fade6 {
+                                0%, 83.32% { opacity: 0; }
+                                83.33%, 99.99% { opacity: 1; }
+                                100% { opacity: 0; }
+                            }
+                        `}
+                    </style>
+                </div>
+            </div>
+        </section>
+        
+        <section>
 
         </section>
+        <Footer />
         </>
     )
 }
