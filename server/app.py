@@ -242,7 +242,7 @@ def get_songs():
             songs = MidiStorage.query.all()
             # Prepare a tuple of dictionaries where the key is filename and value is base64-encoded file_data
             songs_data = [
-                {song.filename: base64.b64encode(song.file_data).decode("utf-8")}
+                {"name":song.filename, "data":base64.b64encode(song.file_data).decode("utf-8")}
                 for song in songs
             ]
         return jsonify({"songs": songs_data})

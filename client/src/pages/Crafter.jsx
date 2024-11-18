@@ -6,9 +6,9 @@ import httpClient from "../HttpClient";
 
 export default function Crafter() {
     const [midiData, setMidiData] = useState(null);
-    const [songs, setSongs] = useState([]);
     const [selectedSong, setSelectedSong] = useState(null);
 
+    const [songs, setSongs] = useState([]);
     
     useEffect(() => {
         const fetchSongs = async () => {
@@ -16,6 +16,8 @@ export default function Crafter() {
                 const response = await httpClient.get('/songs');  // GET request to fetch songs
                 if (response.data.songs) {
                     setSongs(response.data.songs);
+
+                    
                 } else {
                     alert('No songs available.');
                 }
@@ -26,7 +28,25 @@ export default function Crafter() {
         };
 
         fetchSongs();  // Call the function to fetch songs
-    }, []);
+    }, [0]);
+
+    function base64ToArrayBuffer(base64String) {
+
+        let binaryString = atob(base64String); // Decode Base64 string
+      
+        let array = new Uint8Array(binaryString.length); // Create a Uint8Array
+      
+        for (let i = 0; i < binaryString.length; i++) {
+      
+          array[i] = binaryString.charCodeAt(i); // Set each byte
+      
+        }
+      
+        return array.buffer; // Return the ArrayBuffer
+      
+      }
+    
+      
 
     
 
@@ -38,14 +58,14 @@ export default function Crafter() {
         };
     
         try {
-            // const response = await fetch(filePath);
-            console.log(typeof(file));
             
-            // const arrayBuffer = await file.arrayBuffer();
-            // const midi = new Midi(arrayBuffer);
-            // setMidiData(midi);
+            let arrayBuffer = base64ToArrayBuffer(file)
             // console.log(arrayBuffer);
-            // setSelectedSong(file);
+            
+            const midi = new Midi(arrayBuffer);
+            setMidiData(midi);
+            console.log(arrayBuffer);
+            setSelectedSong(file);
         } catch (err) {
             console.log('Error loading MIDI file: ' + err.message);
         }
@@ -60,10 +80,12 @@ export default function Crafter() {
                 <div className="px-4 py-2  mt-12 mb-4 flex justify-center">
                     <select onChange={handleDropdownSelect} defaultValue="">
                         <option value="" disabled>Select a file</option>
-                        {songs.map((file, index) => (
-                        <option key={index} value={file}>{file}</option>
+                        {songs.map((song, index) => (
+                        <option key={index} value={song.data}>{song.name}</option>
                         ))}
                     </select>
+
+                    
                 </div>
                 
 
