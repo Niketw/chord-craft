@@ -16,32 +16,56 @@ export default function VerifyOTP() {
         e.preventDefault();
         console.log("Entered OTP:", otp);
         try {
-            await httpClient.post('/verify', { otp });
+            const response = await httpClient.post('/verify', { otp });
             
-            toast.success('Email verified successfully!', {
-                duration: 2000,
-                position: 'top-right',
-                style: {
-                    background: '#22c55e',
-                    color: '#fff',
-                },
-            });
+            // Check if this was a password reset verification
+            if (response.data.message.includes("Password reset successful")) {
+                toast.success('Password reset successful! Please login with your new password.', {
+                    duration: 2000,
+                    position: 'top-right',
+                    style: {
+                        background: '#22c55e',
+                        color: '#fff',
+                    },
+                });
+            } else {
+                // Regular email verification
+                toast.success('Email verified successfully! Please login to continue.', {
+                    duration: 2000,
+                    position: 'top-right',
+                    style: {
+                        background: '#22c55e',
+                        color: '#fff',
+                    },
+                });
+            }
 
             // Short delay before redirect
             setTimeout(() => {
                 window.location.href = "/login";
-            }, 1000);
+            }, 2000);
 
         } catch (error) {
             console.log(error);
-            toast.error('Invalid OTP or verification failed', {
-                duration: 3000,
-                position: 'top-right',
-                style: {
-                    background: '#FF4B4B',
-                    color: '#fff',
-                },
-            });
+            if (error.response && error.response.status === 400) {
+                toast.error('Invalid OTP. Please try again.', {
+                    duration: 3000,
+                    position: 'top-right',
+                    style: {
+                        background: '#FF4B4B',
+                        color: '#fff',
+                    },
+                });
+            } else {
+                toast.error('Verification failed. Please try again later.', {
+                    duration: 3000,
+                    position: 'top-right',
+                    style: {
+                        background: '#FF4B4B',
+                        color: '#fff',
+                    },
+                });
+            }
         }
     };
 

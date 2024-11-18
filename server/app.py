@@ -111,35 +111,46 @@ def register_user():
 
 @app.route("/verify", methods=["POST"])
 def verify_otp():
-    otp = request.json.get('otp') # Use .get() to safely retrieve data
-    print(otp)
+    otp = request.json.get('otp')
+    
     try:
-        # Check if OTP matches the one in the session
+        # Password Reset Flow
+        if 'reset_otp' in session:
+            if str(otp) == str(session.get('reset_otp')):
+                # Update password in database
+                user = User.query.filter_by(email=session.get('reset_email')).first()
+                if user:
+                    user.password = session.get('new_password')
+                    db.session.commit()
+                    
+                    # Clear reset-related session data
+                    session.pop('reset_otp', None)
+                    session.pop('reset_email', None)
+                    session.pop('new_password', None)
+                    
+                    return jsonify({"message": "Password reset successful"}), 200
+                return jsonify({"error": "User not found"}), 404
+            return jsonify({"error": "Invalid OTP"}), 400
+            
+        # Regular Registration Flow
         if 'otp' in session:
-            print(f"Session OTP: {session.get('otp')}, Provided OTP: {otp}")  # Debug log
-            # Retrieve the user from the database using the email stored in session
-            email = session.get('email')
-            print(f"Retrieving user with email: {email}")  # Debug log
-            user = User.query.filter_by(email=email).first()
-
-            if user:
-                # Mark OTP as verified
-                user.otp_verified = True
-                db.session.commit()
-
-                # Clear OTP and email from session after successful verification
-                session.pop('otp', None)
-                session.pop('email', None)
-
-                return jsonify({"message": "OTP verified successfully! Please login."}), 200
-            else:
-                return jsonify({"error": "User not found."}), 404
-        else:
-            return jsonify({"error": "No OTP in session."}), 400
+            if str(otp) == str(session.get('otp')):
+                email = session.get('email')
+                user = User.query.filter_by(email=email).first()
+                if user:
+                    user.otp_verified = True
+                    db.session.commit()
+                    session.pop('otp', None)
+                    session.pop('email', None)
+                    return jsonify({"message": "Email verified successfully"}), 200
+                return jsonify({"error": "User not found"}), 404
+            return jsonify({"error": "Invalid OTP"}), 400
+            
+        return jsonify({"error": "No OTP verification in progress"}), 400
 
     except Exception as e:
-        print(f"Error verifying OTP: {e}")
-        return jsonify({"error": "Internal Server Error"}), 500
+        print(f"Error in verify_otp: {e}")
+        return jsonify({"error": "Failed to verify OTP"}), 500
 
 
 @app.route("/login", methods=["POST"])
@@ -289,6 +300,35 @@ def increment_clicks():
         db.session.commit()
 
         return jsonify({'message': f"Clicks for '{song_name}' incremented successfully.", 'clicks': midi_record.clicks})
+
+
+@app.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    email = request.json.get('email')
+    new_password = request.json.get('newPassword')
+    
+    try:
+        # Check if user exists
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"error": "No account found with this email"}), 404
+
+        # Generate and store OTP
+        otp = random.randint(100000, 999999)
+        session["reset_otp"] = str(otp)
+        session["reset_email"] = email
+        session["new_password"] = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        
+        # Send OTP email
+        msg = Message("Password Reset OTP", recipients=[email])
+        msg.body = f"Your OTP for password reset is: {otp}\nThis OTP is valid for 10 minutes."
+        mail.send(msg)
+
+        return jsonify({"message": "OTP sent successfully"}), 200
+
+    except Exception as e:
+        print(f"Error in forgot_password: {e}")
+        return jsonify({"error": "Failed to process request"}), 500
 
 
 PORT = int(os.getenv("S_PORT"))
