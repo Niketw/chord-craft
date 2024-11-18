@@ -425,6 +425,9 @@ import httpClient from "../HttpClient.js";
 import Footer from '../components/Footer';
 
 export default function Recorder() {
+    useEffect(() => {
+        document.title = "Recorder | ChordCraft"
+    }, []);
     // State to track the comparison results, visualization image, and song list
     const [fileSent, setFileSent] = useState(false);
     const [comparisonResults, setComparisonResults] = useState(null);

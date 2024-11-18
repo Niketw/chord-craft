@@ -9,6 +9,9 @@ import Footer from '../components/Footer';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Landing() {
+    useEffect(() => {
+        document.title = "Home | ChordCraft"
+    }, []);
     const [user, setUser] = useState(null);
 
     const getStarted = () => {

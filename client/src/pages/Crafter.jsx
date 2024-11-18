@@ -5,6 +5,9 @@ import MidiCanvas from "../components/MidiCanvas";
 import httpClient from "../HttpClient";
 
 export default function Crafter() {
+    useEffect(() => {
+        document.title = "Crafter | ChordCraft"
+    }, []);
     const [midiData, setMidiData] = useState(null);
     const [selectedSong, setSelectedSong] = useState(null);
     const [songs, setSongs] = useState([]);

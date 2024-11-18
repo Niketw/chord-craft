@@ -1,12 +1,15 @@
 import Header from '../components/Header';
 import newlogo from '../vectors/newlogo.svg';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import httpClient from "../HttpClient.js";
 import { Toaster, toast } from 'react-hot-toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function Signup() {
+    useEffect(() => {
+        document.title = "Sign Up | ChordCraft"
+    }, []);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

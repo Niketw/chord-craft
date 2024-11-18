@@ -1,10 +1,13 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import httpClient from "../HttpClient.js";
 
 
 export default function Contact() {
+    useEffect(() => {
+        document.title = "Contact Us | ChordCraft"
+    }, []);
     const [email, setEmail] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

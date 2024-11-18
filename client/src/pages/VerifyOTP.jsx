@@ -1,12 +1,15 @@
 import Header from '../components/Header';
 import newlogo from '../vectors/newlogo.svg';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import httpClient from "../HttpClient.js";
 import { Toaster, toast } from 'react-hot-toast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function VerifyOTP() {
+    useEffect(() => {
+        document.title = "OTP | ChordCraft"
+    }, []);
     const [otp, setOTP] = useState("");
 
     const verifyOtp = async (e) => {

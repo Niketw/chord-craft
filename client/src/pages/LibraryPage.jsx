@@ -4,6 +4,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function LibraryPage() {
+    useEffect(() => {
+        document.title = "Library | ChordCraft"
+    }, []);
     const [songs, setSongs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
