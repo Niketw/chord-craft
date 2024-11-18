@@ -31,9 +31,9 @@ export default function Header(){
                     <a href="/"><img src={Header_logo}/></a>
                 </div>
                 <div className="flex gap-8">
-                    <a href="/library" className="text-gray-400 hover:text-pink-400 transition-colors">Library</a>
-                    <a href="/" className="text-gray-400 hover:text-pink-400 transition-colors">Trending</a>
-                    <a href="/" className="text-gray-400 hover:text-pink-400 transition-colors">About</a>
+                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                    <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
+                    <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">About</a>
                 </div>
                 {user ? 
                     <div className="relative group">
