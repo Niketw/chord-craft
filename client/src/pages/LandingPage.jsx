@@ -84,9 +84,9 @@ export default function Landing() {
             </div>
         </section>
 
-        {!user && (
+        {user && (
             <section>
-                <section className="text-gray-400 bg-gradient-to-b from-craft_gradient_blue/30 to-craft_gradient_purple/30 body-font">
+                <section className="text-gray-400 bg-gradient-to-b from-blue-600/30 to-black/30 body-font">
                     <section className="text-gray-400 body-font">
                         <div className="container px-5 py-24 mx-auto flex flex-wrap">
                             <div className="flex flex-col text-center w-full mb-20">
@@ -104,8 +104,8 @@ export default function Landing() {
                                         </svg>
                                     </div>
                                     <div className="flex-grow sm:pl-6 mt-6 sm:mt-0">
-                                        <h4 className="font-medium title-font text-white mb-1 text-xl">Shooting Stars</h4>
-                                        <p className="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+                                        <h4 className="font-medium title-font text-white mb-1 text-xl">Select Audio Track</h4>
+                                        <p className="leading-relaxed">Click on "select" button to choose your track for learning.</p>
                                     </div>
                                 </div>
                             </div>
@@ -121,8 +121,8 @@ export default function Landing() {
                                         </svg>
                                     </div>
                                     <div className="flex-grow sm:pl-6 mt-6 sm:mt-0">
-                                        <h4 className="font-medium title-font text-white mb-1 text-xl">The Catalyzer</h4>
-                                        <p className="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+                                        <h4 className="font-medium title-font text-white mb-1 text-xl">Record Yourself Playing</h4>
+                                        <p className="leading-relaxed">Pull out your MIDI Keyboard, connect it to your system, hit "Record" and start playing!</p>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@ export default function Landing() {
                                 <div className="h-full w-6 absolute inset-0 flex items-center justify-center">
                                     <div className="h-full w-1 bg-gray-800 pointer-events-none"></div>
                                 </div>
-                                <div className="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-purple-500 text-white relative z-10 title-font font-medium text-sm">4</div>
+                                <div className="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-purple-500 text-white relative z-10 title-font font-medium text-sm">3</div>
                                 <div className="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
                                     <div className="flex-shrink-0 w-24 h-24 bg-gray-800 text-purple-400 rounded-full inline-flex items-center justify-center">
                                         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-12 h-12" viewBox="0 0 24 24">
@@ -139,8 +139,8 @@ export default function Landing() {
                                         </svg>
                                     </div>
                                     <div className="flex-grow sm:pl-6 mt-6 sm:mt-0">
-                                        <h4 className="font-medium title-font text-white mb-1 text-xl">Neptune</h4>
-                                        <p className="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+                                        <h4 className="font-medium title-font text-white mb-1 text-xl">Results!</h4>
+                                        <p className="leading-relaxed">Submit your recording and be greeted with your results. It includes a comprehensive feedback on how you played throughout the track and where you can improve!</p>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@ export default function Landing() {
             </section>
         )}
 
-        <section className="text-gray-400 bg-gradient-to-b from-craft_gradient_pink/30 to-craft_gradient_blue/30 body-font">
+        <section className="text-gray-400 bg-gradient-to-b from-black/10 to-craft_gradient_blue/30 body-font">
             <div className="container px-5 py-24 mx-auto">
                 <div className="flex flex-col text-center w-full mb-20">
                     <h1 className="text-2xl font-medium title-font mb-4 text-white tracking-widest">OUR TEAM</h1>

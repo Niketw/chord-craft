@@ -8,6 +8,7 @@ import Recorder from "./pages/Recorder.jsx";
 import Library from "./pages/Library.jsx";
 import Crafter from "./pages/Crafter.jsx";
 import Contact from "./pages/Contact.jsx";
+import History from "./pages/History.jsx";
 
 
 export default function App() {
@@ -22,7 +23,9 @@ export default function App() {
                 <Route path="/library" element = {<Library />} />
                 <Route path="/about" element={<NotFound />} />
                 <Route path="/craft" element = {<Crafter />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route path="/contact" element={<Contact />} />                
+                <Route path="/history" element={<History />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

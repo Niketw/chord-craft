@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import newlogo from '../vectors/newlogo.svg';
 import { useState } from 'react';
 import httpClient from "../HttpClient.js";
+import { Toaster, toast } from 'react-hot-toast';
 
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -20,16 +21,37 @@ export default function Login() {
                 password,
             }, { withCredentials: true });
 
-            window.location.href = "/";
+            toast.success('Login successful!', {
+                duration: 2000,
+                position: 'top-right',
+                style: {
+                    background: '#22c55e', // green background
+                    color: '#fff',
+                },
+            });
+
+            // Short delay to allow the user to see the success message
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1000);
+
         } catch (error) {
             if (error.response && error.response.status === 401) {
-                alert("Invalid credentials");
+                toast.error('Invalid credentials', {
+                    duration: 3000,
+                    position: 'top-right',
+                    style: {
+                        background: '#FF4B4B',
+                        color: '#fff',
+                    },
+                });
             }
         }
     };
 
     return (
         <section className="bg-craft_black h-screen grid place-items-center relative overflow-hidden">
+            <Toaster />
             <video 
                 className="absolute w-full h-full object-cover opacity-30"
                 autoPlay 

@@ -32,7 +32,11 @@ export default function Header(){
                 </div>
                 <div className="flex gap-8">
                     <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                    {user ? 
+                    <a href="/history" className="text-gray-400 hover:text-craft_pink transition-colors">History</a>
+                    :
                     <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
+                    }
                     <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">About</a>
                 </div>
                 {user ? 
