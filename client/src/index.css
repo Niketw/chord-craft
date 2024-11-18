@@ -51,6 +51,22 @@ html {
 }
 
 @layer components {
+    select{
+        display: inline-flex;
+        /*height: 2.5rem;*/
+        padding: 0.625rem 1.75rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+        flex-shrink: 0;
+        
+        background: theme(colors.action);
+        font-family: theme(fontFamily.default);
+        color: theme(colors.primary);
+        border-radius: 0.25rem;
+        font-size: 1rem
+    }
+
     .btn-default {
         display: inline-flex;
         /*height: 2.5rem;*/

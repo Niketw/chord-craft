@@ -228,11 +228,19 @@ def comparator():
 
 @app.route('/songs', methods=['GET'])
 def get_songs():
+    # try:
+    #     with app.app_context():
+    #         songs = MidiStorage.query.all()  # Get all songs from the database
+    #         song_names = [song.filename for song in songs]  # Extract song names
+    #     return jsonify({"songs": song_names})
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 500
+    #Bhai file ka naam nahi pura file bhejna tha
     try:
         with app.app_context():
-            songs = MidiStorage.query.all()  # Get all songs from the database
-            song_names = [song.filename for song in songs]  # Extract song names
-        return jsonify({"songs": song_names})
+            songs = MidiStorage.query.all()
+            songs_data = [MidiStorage.query.filter_by(filename=song.filename).file_data for song in songs]
+        return jsonify({"songs": songs_data})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
