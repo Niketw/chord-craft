@@ -81,8 +81,8 @@ html {
         font-weight:medium;
         font-family: theme(fontFamily.default);
         color: theme(colors.primary);
-        border: 1px solid theme(colors.action);
-        background: theme(colors.action);
+        border: 1px solid theme(colors.craft_pink);
+        background: theme(colors.craft_pink);
         transition: transform .2s ease;
     }
 
@@ -109,7 +109,7 @@ html {
         font-size: 1rem;
         font-weight:medium;
         font-family: theme(fontFamily.default);
-        border: 1px solid theme(colors.primary);
+        border: 1px solid theme(colors.craft_pink);
         background: theme(colors.craft_black);
         color:theme(colors.primary);
         transition: all .2s ease;

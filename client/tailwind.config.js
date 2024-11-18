@@ -7,11 +7,16 @@ module.exports = {
     extend: {
         colors: {
             primary: "#FFFAF7",
-            secondary: "#585656",
+            secondary: "#ffb6ff",
             action: "#ff28a9",
             craft_grey: "#0b042c",
-            craft_black: "#0f0423"
-            
+            craft_black: "#0f0423",
+            craft_blue: "#0d00a8",
+            craft_pink: "#dc0084",
+            craft_gradient_blue: "#003baa",
+            craft_gradient_pink: "#70008c",
+            craft_gradient_purple: "#400c9a",
+
         },
 
         fontSize: {
