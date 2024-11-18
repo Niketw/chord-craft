@@ -2,10 +2,13 @@ import os
 import pygame
 from flask import Flask
 from models import db, MidiStorage, PlayedMidi
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Initialize Flask app for database context
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = r"sqlite:///./db.sqlite"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["SQLALCHEMY_DATABASE_URI"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
