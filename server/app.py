@@ -236,14 +236,18 @@ def get_songs():
     # except Exception as e:
     #     return jsonify({"error": str(e)}), 500
     #Bhai file ka naam nahi pura file bhejna tha
+
     try:
         with app.app_context():
             songs = MidiStorage.query.all()
-            songs_data = [MidiStorage.query.filter_by(filename=song.filename).file_data for song in songs]
+            # Prepare a tuple of dictionaries where the key is filename and value is base64-encoded file_data
+            songs_data = [
+                {song.filename: base64.b64encode(song.file_data).decode("utf-8")}
+                for song in songs
+            ]
         return jsonify({"songs": songs_data})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 
 PORT = int(os.getenv("S_PORT"))
