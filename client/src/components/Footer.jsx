@@ -9,9 +9,7 @@ export default function Footer() {
                         <p className="text-sm">&copy; 2024 ChordCraft. All rights reserved.</p>
                     </div>
                     <div className="flex space-x-6">
-                        <a href="/about" className="text-gray-400 hover:text-pink-400 transition-colors">About</a>
-                        <a href="/privacy" className="text-gray-400 hover:text-pink-400 transition-colors">Privacy Policy</a>
-                        <a href="/terms" className="text-gray-400 hover:text-pink-400 transition-colors">Terms</a>
+                        <a href="/contact" className="text-gray-400 hover:text-pink-400 transition-colors">Contact Us</a>
                     </div>
                 </div>
             </div>
