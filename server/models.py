@@ -22,8 +22,11 @@ class MidiStorage(db.Model):
     __tablename__ = 'songs'  # Specify table name
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    filename = db.Column(db.String(255), nullable=False)
-    file_data = db.Column(db.LargeBinary, nullable=False)  # Store binary data for MIDI files
+    filename = db.Column(db.String(255), unique=False, nullable=False)
+    file_data = db.Column(db.LargeBinary, unique=False, nullable=False)  # Store binary data for MIDI files
+    artist = db.Column(db.String(255), unique=False, nullable=False)
+    cover = db.Column(db.LargeBinary(255), unique=False, nullable=False)
+    clicks = db.Column(db.Integer, unique=False, nullable=False, default = 0)
     created_at = db.Column(db.DateTime, server_default=db.func.now())  # Timestamp for when the file was added
 
     def __repr__(self):
