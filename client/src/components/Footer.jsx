@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
     return (
-        <footer className="bg-craft_black text-primary py-8">
+        <footer className="bg-gradient-to-b from-craft_grey/10 to-black text-primary py-8">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <div className="mb-4 md:mb-0">

@@ -2,12 +2,38 @@ import Header_logo from '../vectors/newsmalllogo.svg';
 import log_out from '../vectors/logout.svg';
 import httpClient from "../HttpClient.js";
 import {useEffect, useState} from "react";
- 
+import { toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+
 export default function Header(){
 
     const logoutUser = async () => {
-        await httpClient.post('/logout');
-        window.location.href = "/";
+        try {
+            await httpClient.post('/logout');
+            toast.success('Successfully logged out!', {
+                duration: 2000,
+                position: 'top-right',
+                style: {
+                    background: '#dd9613',
+                    color: '#fff',
+                },
+            });
+            
+            // Short delay before redirect to show the toast
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 1000);
+        } catch (error) {
+            console.error('Logout failed:', error);
+            toast.error('Failed to logout', {
+                duration: 3000,
+                position: 'top-right',
+                style: {
+                    background: '#FF4B4B',
+                    color: '#fff',
+                },
+            });
+        }
     };
 
     const [user, setUser] = useState(null);
@@ -25,19 +51,35 @@ export default function Header(){
 
 
     return (
-        <header className="px-16 py-4 absolute top-0 w-full z-50 bg-gradient-to-r from-black to-craft_grey">
+        <header className="px-16 py-5 absolute top-0 w-full z-50 bg-gradient-to-b from-black to-craft_grey">
+            <Toaster />
             <nav className="flex justify-between items-center">
                 <div className="flex items-center gap-12">
                     <a href="/"><img src={Header_logo}/></a>
                 </div>
                 <div className="flex gap-8">
-                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
-                    {user ? 
-                    <a href="/history" className="text-gray-400 hover:text-craft_pink transition-colors">History</a>
-                    :
-                    <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
-                    }
-                    <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">About</a>
+                    {window.location.pathname === '/library' || window.location.pathname === '/craft' || window.location.pathname === '/crafter' ? (
+                        <>
+                            <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Home</a>
+                            <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                        </>
+                    ) : (
+                        <>
+                            <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                            {user ? 
+                            <a href="/#how-to" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
+                                e.preventDefault();
+                                document.querySelector('#how-to')?.scrollIntoView({behavior: 'smooth'});
+                            }}>Guide</a>
+                            :
+                            <a href="/register" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
+                            }
+                            <a href="/#our-team" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
+                                e.preventDefault();
+                                document.querySelector('#our-team')?.scrollIntoView({behavior: 'smooth'});
+                            }}>About</a>
+                        </>
+                    )}
                 </div>
                 {user ? 
                     <div className="relative group">

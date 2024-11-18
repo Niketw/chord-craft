@@ -30,6 +30,7 @@ export default function Landing() {
 
 
     return (
+        
         <>
         <Header />
         <section className="bg-white h-screen relative overflow-hidden">
@@ -85,7 +86,7 @@ export default function Landing() {
         </section>
 
         {user && (
-            <section>
+            <section id="how-to">
                 <section className="text-gray-400 bg-gradient-to-b from-blue-600/30 to-black/30 body-font">
                     <section className="text-gray-400 body-font">
                         <div className="container px-5 py-24 mx-auto flex flex-wrap">
@@ -150,7 +151,7 @@ export default function Landing() {
             </section>
         )}
 
-        <section className="text-gray-400 bg-gradient-to-b from-black/10 to-craft_gradient_blue/30 body-font">
+        <section id="our-team" className="text-gray-400 bg-gradient-to-b from-black/10 to-craft_gradient_blue/30 body-font">
             <div className="container px-5 py-24 mx-auto">
                 <div className="flex flex-col text-center w-full mb-20">
                     <h1 className="text-2xl font-medium title-font mb-4 text-white tracking-widest">OUR TEAM</h1>
