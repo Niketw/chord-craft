@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 import httpClient from "../HttpClient.js";
 import Footer from '../components/Footer';
+import TypewriterText from '../components/TypewriterText';
+import TypewriterParagraph from '../components/TypewriterParagraph';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -94,7 +96,9 @@ export default function Landing() {
                     <section className="text-gray-400 body-font">
                         <div className="container px-5 py-24 mx-auto flex flex-wrap">
                             <div className="flex flex-col text-center w-full mb-20">
-                                <h1 className="text-2xl font-medium title-font mb-4 text-white tracking-widest">HOW TO USE:</h1>
+                                <h1 className="text-2xl font-medium title-font mb-4 text-white tracking-widest">
+                                    <TypewriterText text="HOW TO USE:" delay={100} />
+                                </h1>
                             </div>
                             <div className="flex relative pt-10 pb-20 sm:items-center md:w-2/3 mx-auto">
                                 <div className="h-full w-6 absolute inset-0 flex items-center justify-center">
@@ -161,11 +165,11 @@ export default function Landing() {
                     <p className="lg:w-2/3 mx-auto leading-relaxed text-base">All of us worked hard for SE</p>
                 </div>
                 <div className="flex flex-wrap -m-4">
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://media.licdn.com/dms/image/v2/D5603AQFJVrvzO3K0tA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1709459642342?e=1737590400&v=beta&t=lTPbgAwv4H0fJyP0lxTrXfElEynZvvDNLGOItukg-pQ"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Wasil Iftekhar</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Wasil Iftekhar</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023001</h4>
                                 <p className="mb-4">Backend Engineer</p>
                                 <span className="inline-flex">
@@ -188,11 +192,11 @@ export default function Landing() {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://media.licdn.com/dms/image/v2/D5603AQGbZi0CfUZYlg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731121250053?e=1737590400&v=beta&t=a1IEYUWuyp1l5QUjJwsnMUZvo0FzXyktDPiLsvMKMrA"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Ayan Mahata</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Ayan Mahata</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023002</h4>
                                 <p className="mb-4">Frontend Engineer</p>
                                 <span className="inline-flex">
@@ -215,11 +219,11 @@ export default function Landing() {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://avatars.githubusercontent.com/u/161603557?v=4"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Aniket Inamdar</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Aniket Inamdar</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023003</h4>
                                 <p className="mb-4">Team Lead - Laid the groundwork for our project</p>
                                 <span className="inline-flex">
@@ -242,11 +246,11 @@ export default function Landing() {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://images.samsung.com/is/image/samsung/assets/latin_en/smartphones/galaxy-s23-ultra/images/galaxy-s23-ultra-highlights-kv.jpg"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Vivek Gadhia</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Vivek Gadhia</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023004</h4>
                                 <p className="mb-4">Database Expert</p>
                                 <span className="inline-flex">
@@ -269,11 +273,11 @@ export default function Landing() {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://media.licdn.com/dms/image/v2/D5603AQFg5QIssJFWvg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1695400020411?e=1737590400&v=beta&t=fi75i746orFbulHq2zASmwbzXVbX1eorkQExvWuxuGY"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Chirag Jain</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Chirag Jain</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023005</h4>
                                 <p className="mb-4">UI/UX Designer</p>
                                 <span className="inline-flex">
@@ -296,11 +300,11 @@ export default function Landing() {
                             </div>
                         </div>
                     </div>
-                    <div className="p-4 lg:w-1/2">
+                    <div className="p-4 lg:w-1/2 border-2-pink-500">
                         <div className="h-full flex sm:flex-row flex-col items-center sm:justify-start justify-center text-center sm:text-left">
                             <img alt="team" className="flex-shrink-0 rounded-full w-48 h-48 object-cover object-center sm:mb-0 mb-4" src="https://media.licdn.com/dms/image/v2/D5603AQH7DA1VvCCIwA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1714840418429?e=1737590400&v=beta&t=IMpnh355rTCYaO8zhgR3wYLdQr2Xiy7Lk_u-rP1ldMQ"/>
                             <div className="flex-grow sm:pl-8">
-                                <h2 className="title-font font-medium text-lg text-white">Samay Jain</h2>
+                                <h2 className="title-font font-medium text-xl text-white">Samay Jain</h2>
                                 <h4 className="text-gray-500 mb-3">IIT2023069</h4>
                                 <p className="mb-4">Full Stack Engineer</p>
                                 <span className="inline-flex">
