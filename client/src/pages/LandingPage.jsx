@@ -59,7 +59,7 @@ export default function Landing() {
                                 <h4 className="text-primary text-xl mb-2">Welcome, {user.name}</h4>
                                 <p className="text-gray-200 mb-6">Pick where you left off</p>
                                 <div>
-                                    <a href="/recorder">
+                                    <a href="/craft">
                                         <button className="btn-alter-default rounded-full hover:rounded-full bg-pink-600">Compare audio</button>
                                     </a>
                                 </div>
