@@ -35,7 +35,7 @@ export default function VerifyOTP() {
                 <source src="https://fantastic-twilight-7bfa45.netlify.app/newusers.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
-            <div className='flex bg-craft_grey text-primary min-h-[400px] items-center overflow-clip rounded-2xl'>
+            <div className='flex bg-craft_grey text-primary min-h-[400px] items-center overflow-clip rounded-2xl relative z-10'>
                 <div className="working-container px-20 grid gap-5 justify-center justify-items-center">
                     <img src={newlogo} className="w-36"/>
                     <form onSubmit={verifyOtp} method="post" className="grid grid-rows-2 gap-3 items-center w-72">
