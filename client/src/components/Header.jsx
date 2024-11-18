@@ -67,11 +67,11 @@ export default function Header(){
                             {window.location.pathname === '/library' || window.location.pathname === '/craft' || window.location.pathname === '/crafter' ? (
                                 <>
                                     <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Home</a>
-                                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                                    {user && <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>}
                                 </>
                             ) : (
                                 <>
-                                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                                    {user && <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>}
                                     {user ? 
                                         <a href="/#how-to" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
                                             e.preventDefault();

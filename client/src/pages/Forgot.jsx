@@ -135,7 +135,7 @@ export default function Forgot() {
                         <h3 className="display-text leading-[48px]">Reset your
                         Password</h3>
                         <p className="tagline-text mt-2">
-                        Securely reset your password and regain access to your account
+                        Securely <span className='text-action'> reset your password</span> and regain access to your account
                         </p>
                     </div>
                 </div>
