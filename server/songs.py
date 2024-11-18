@@ -14,14 +14,27 @@ pygame.init()
 pygame.mixer.init()
 
 
-def store_midi(file_path):
-    """Function to store a MIDI file in the database without the .mid extension in the filename."""
+#ADD
+def store_midi():
+    file_path = input("Enter the path to the MIDI file: ")
+    cover_image_path = input("Enter cover image path: ")
+    artist_name = input("Enter artist name: ")
+    file_data = 0
+    cover_data = 0
+
     if not os.path.exists(file_path):
         print(f"File '{file_path}' does not exist.")
         return
 
+    if not os.path.exists(cover_image_path):
+        print(f"Cover image '{cover_image_path}' does not exist.")
+        return
+
     with open(file_path, 'rb') as file:
         file_data = file.read()  # Read the MIDI file as binary data
+
+    with open(cover_image_path, 'rb') as cover_file:
+        cover_data = cover_file.read()  # Read the cover image as binary data
 
     # Extract filename and remove the .mid extension if present
     filename = os.path.basename(file_path)
@@ -34,18 +47,26 @@ def store_midi(file_path):
             print(f"A MIDI file with the name '{filename}' already exists.")
             return
 
-    # Create a new MidiStorage record
-    new_midi = MidiStorage(filename=filename, file_data=file_data)
+    # Create a new MidiStorage record with artist name and cover data
+    new_midi = MidiStorage(
+        filename=filename,
+        file_data=file_data,
+        artist=artist_name,
+        cover=cover_data,
+        clicks=0  # Initialize clicks to 0
+    )
     with app.app_context():
         db.session.add(new_midi)
         db.session.commit()
-        print(f"MIDI file '{filename}' stored successfully!")
+        print(f"MIDI file '{filename}' stored successfully with artist '{artist_name}' and cover image!")
 
 
-def play_midi(song_name):
+def play_midi():
     """Function to retrieve and play a MIDI file by its name."""
+    song_name = input("Enter the name of the MIDI file to play: ")
     with app.app_context():
         midi_file = MidiStorage.query.filter_by(filename=song_name).first()
+        print(midi_file.clicks)
         if midi_file:
             temp_file_path = f"{midi_file.filename}_temp.mid"
             with open(temp_file_path, 'wb') as temp_file:
@@ -64,15 +85,33 @@ def play_midi(song_name):
         else:
             print(f"No MIDI file found with the name '{song_name}'")
 
+def delete_midi(filename):
+    """Function to delete a MIDI file from the database based on the filename."""
+    song_name = input("Enter the name of the MIDI file to play: ")
+    with app.app_context():
+        # Search for the MIDI file in the database
+        midi_to_delete = MidiStorage.query.filter_by(filename=filename).first()
+        if not midi_to_delete:
+            print(f"No MIDI file with the name '{filename}' found in the database.")
+            return
+
+        # Delete the MIDI file
+        db.session.delete(midi_to_delete)
+        db.session.commit()
+        print(f"MIDI file '{filename}' deleted from the database successfully.")
+
+
 
 def get_midi_from_database(song_name):
     """Fetch the MIDI song from the database based on the filename."""
     with app.app_context():
         midi_file = MidiStorage.query.filter_by(filename=song_name).first()
-
+        print(midi_file)
         if midi_file:
+
             # Write the binary data to a temporary file
             temp_file_path = f"temp/{midi_file.filename}.mid"  # Adjust path as needed
+            print(temp_file_path)
             with open(temp_file_path, 'wb') as temp_file:
                 temp_file.write(midi_file.file_data)
             return temp_file_path
@@ -128,21 +167,37 @@ def get_played_midi_from_database(song_name):
             raise FileNotFoundError(f"Song '{song_name}' not found in the database.")
 
 
+def delete_played_midi(filename):
+    """Function to delete a MIDI file from the database based on the filename."""
+    with app.app_context():
+        # Search for the MIDI file in the database
+        midi_to_delete = PlayedMidi.query.filter_by(filename=filename).first()
+        if not midi_to_delete:
+            print(f"No MIDI file with the name '{filename}' found in the database.")
+            return
+
+        # Delete the MIDI file
+        db.session.delete(midi_to_delete)
+        db.session.commit()
+        print(f"MIDI file '{filename}' deleted from the database successfully.")
+
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()  # Ensure the table exists
 
         while True:
             option = input(
-                "Choose an option: 'add' to store a MIDI, 'play' to play a MIDI, or 'exit' to quit: ").lower()
+                "Choose an option: 'add' to store a MIDI, 'delete' to delete a MIDI, 'play' to play a MIDI, or 'exit' to quit: ").lower()
             if option == 'exit':
                 print("Exiting the program.")
                 break
             elif option == 'add':
-                midi_path = input("Enter the path to the MIDI file: ")
-                store_midi(midi_path)
+                store_midi()
+            elif option == 'delete':
+                delete_midi()
             elif option == 'play':
-                song_name = input("Enter the name of the MIDI file to play: ")
-                play_midi(song_name)
+                play_midi()
             else:
                 print("Invalid option. Please type 'add', 'play', or 'exit'.")

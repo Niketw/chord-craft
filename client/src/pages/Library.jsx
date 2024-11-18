@@ -1,6 +1,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import perfectImg from './perfect.jpg';
+import perfectImg from '../../../server/perfect.jpg';
 import closerImg from './closer.jpg';
 import OneDirectionImg from './oned.jpg';
 
@@ -26,8 +26,8 @@ export default function Library() {
                         {libraryItems.map((item) => (
                             <div key={item.id} className="flex flex-col items-center">
                                 <div className="w-full h-48 overflow-hidden rounded-lg">
-                                    <img 
-                                        src={item.image} 
+                                    <img
+                                        src={item.image}
                                         alt={item.title}
                                         className="w-full h-full object-cover object-center"
                                     />
@@ -42,4 +42,4 @@ export default function Library() {
             <Footer />
         </>
     );
-} 
+}

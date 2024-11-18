@@ -68,6 +68,18 @@ export default function Comparator({ recordedData, selectedSong }) {
                 const data = await response;
                 console.log("Response received:", data);
 
+                const incrementClickCount = async (songName) => {
+                    try {
+                        const response = await httpClient.post("/increment-clicks", { song_name: songName });
+
+                        if (response.data) {
+                            console.log("Click count updated:", response.data);
+                        }
+                    } catch (error) {
+                        console.error("Error incrementing click count:", error);
+                    }
+                };
+
                 if (data.accuracy) {
                     setComparisonResults(data.accuracy);
                     setVisualization(data.visualization);

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from comparator import *
 import base64
-from songs import get_midi_from_database, MidiStorage, store_played_midi, get_played_midi_from_database
+from songs import get_midi_from_database, MidiStorage, store_played_midi, get_played_midi_from_database, delete_played_midi
 
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
@@ -178,11 +178,9 @@ def comparator():
         return jsonify({"error": "No file provided"}), 400
 
     played_file = request.files["played_file"]
-    temp_file_path = os.path.join("temp", played_file.filename)
+    temp_file_path = os.path.join("temp", "recorded.mid")
     played_file.save(temp_file_path)
     played_file = store_played_midi(temp_file_path)
-
-
     song_name = request.form.get('song_name')
     try:
         original_file = get_midi_from_database(song_name)
@@ -248,6 +246,49 @@ def get_songs():
         return jsonify({"songs": songs_data})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+@app.route('/library-items', methods=['GET'])
+def get_library_items():
+    with app.app_context():
+        # Retrieve songs sorted by clicks in descending order
+        songs = MidiStorage.query.order_by(MidiStorage.clicks.desc()).all()
+
+        song_list = [
+            {
+                'id': song.id,
+                'image': f"data:image/jpeg;base64,{base64.b64encode(song.cover).decode('utf-8')}",
+                # Convert binary to Base64
+                'title': song.filename,
+                'subtitle': song.artist,
+                'clicks': song.clicks  # Include clicks for sorting purpose
+            }
+            for song in songs
+        ]
+        return jsonify(song_list)
+
+
+@app.route('/increment-clicks', methods=['POST'])
+def increment_clicks():
+    data = request.get_json()
+
+    if not data or 'song_name' not in data:
+        return jsonify({'error': 'Song name is required'}), 400
+
+    song_name = data['song_name']
+
+    with app.app_context():
+        midi_record = MidiStorage.query.filter_by(filename=song_name).first()
+
+        if not midi_record:
+            return jsonify({'error': f"No song found with the name '{song_name}'"}), 404
+
+        # Increment the clicks count
+        midi_record.clicks += 1
+        db.session.commit()
+
+        return jsonify({'message': f"Clicks for '{song_name}' incremented successfully.", 'clicks': midi_record.clicks})
 
 
 PORT = int(os.getenv("S_PORT"))
