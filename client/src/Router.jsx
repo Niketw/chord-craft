@@ -27,7 +27,6 @@ export default function App() {
                 <Route path="/craft" element = {<Crafter />} />
                 <Route path="/contact" element={<Contact />} />                
                 <Route path="/history" element={<History />} />
-
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

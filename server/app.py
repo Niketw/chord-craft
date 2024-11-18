@@ -185,13 +185,17 @@ def logout_user():
 
 @app.route("/comparator", methods=["POST"])
 def comparator():
+    print("in ebackend")
     if "played_file" not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
     played_file = request.files["played_file"]
     temp_file_path = os.path.join("temp", "recorded.mid")
+
     played_file.save(temp_file_path)
     played_file = store_played_midi(temp_file_path)
+    # played_file = "Symphony.mid"
+    # played_file = store_played_midi(played_file)
     song_name = request.form.get('song_name')
     try:
         original_file = get_midi_from_database(song_name)
@@ -227,7 +231,7 @@ def comparator():
         visualization2_base64 = base64.b64encode(image_file.read()).decode('utf-8')
 
     os.remove(temp_file_path)
-
+    print("leaving backend")
     return jsonify({
         "accuracy": results,
         "visualization": visualization_base64,
