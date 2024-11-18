@@ -49,6 +49,8 @@ export default function Header(){
         })();
     }, []);
 
+    const authRoutes = ['/login', '/register', '/verify'];
+    const isAuthRoute = authRoutes.includes(window.location.pathname);
 
     return (
         <header className="px-16 py-5 absolute top-0 w-full z-50 bg-gradient-to-b from-black to-craft_grey">
@@ -58,26 +60,32 @@ export default function Header(){
                     <a href="/"><img src={Header_logo}/></a>
                 </div>
                 <div className="flex gap-8">
-                    {window.location.pathname === '/library' || window.location.pathname === '/craft' || window.location.pathname === '/crafter' ? (
-                        <>
-                            <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Home</a>
-                            <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
-                        </>
+                    {isAuthRoute ? (
+                        <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Home</a>
                     ) : (
                         <>
-                            <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
-                            {user ? 
-                            <a href="/#how-to" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
-                                e.preventDefault();
-                                document.querySelector('#how-to')?.scrollIntoView({behavior: 'smooth'});
-                            }}>Guide</a>
-                            :
-                            <a href="/register" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
-                            }
-                            <a href="/#our-team" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
-                                e.preventDefault();
-                                document.querySelector('#our-team')?.scrollIntoView({behavior: 'smooth'});
-                            }}>About</a>
+                            {window.location.pathname === '/library' || window.location.pathname === '/craft' || window.location.pathname === '/crafter' ? (
+                                <>
+                                    <a href="/" className="text-gray-400 hover:text-craft_pink transition-colors">Home</a>
+                                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                                </>
+                            ) : (
+                                <>
+                                    <a href="/library" className="text-gray-400 hover:text-craft_pink transition-colors">Library</a>
+                                    {user ? 
+                                        <a href="/#how-to" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
+                                            e.preventDefault();
+                                            document.querySelector('#how-to')?.scrollIntoView({behavior: 'smooth'});
+                                        }}>Guide</a>
+                                        :
+                                        <a href="/register" className="text-gray-400 hover:text-craft_pink transition-colors">Guide</a>
+                                    }
+                                    <a href="/#our-team" className="text-gray-400 hover:text-craft_pink transition-colors" onClick={(e) => {
+                                        e.preventDefault();
+                                        document.querySelector('#our-team')?.scrollIntoView({behavior: 'smooth'});
+                                    }}>About</a>
+                                </>
+                            )}
                         </>
                     )}
                 </div>
