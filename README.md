@@ -1,6 +1,5 @@
 # Setup guide
 
-## use conda ( just use miniconda3 in pycharm or the one i gave on whatsapp )
 ### install python requirements for server by
 
 ```bash
