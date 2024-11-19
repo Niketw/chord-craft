@@ -3,6 +3,9 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_mail import Mail, Message
 from flask_session import Session
+from matplotlib.font_manager import json_load
+from mido.scripts.mido_play import play_file
+import json
 from config import ApplicationConfig
 from models import db, User
 from dotenv import load_dotenv
@@ -26,6 +29,8 @@ C_PORT = int(os.getenv("C_PORT"))
 CORS(app, supports_credentials=True, resources={r"/*": {"origins": f"http://localhost:{C_PORT}"}})
 server_session = Session(app)
 db.init_app(app)
+
+midi = pretty_midi.PrettyMIDI()
 
 load_dotenv()
 
@@ -185,59 +190,100 @@ def logout_user():
 
 @app.route("/comparator", methods=["POST"])
 def comparator():
-    print("in ebackend")
-    if "played_file" not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+    print("in backend")
+    # Check if base64 string is provided in request
+    if "played_file_base64" not in request.json:
+        return jsonify({"error": "No base64 file data provided"}), 400
 
-    played_file = request.files["played_file"]
-    temp_file_path = os.path.join("temp", "recorded.mid")
-
-    played_file.save(temp_file_path)
-    played_file = store_played_midi(temp_file_path)
-    # played_file = "Symphony.mid"
-    # played_file = store_played_midi(played_file)
-    song_name = request.form.get('song_name')
-    try:
-        original_file = get_midi_from_database(song_name)
-    except FileNotFoundError:
-        return jsonify({"error": f"Original song '{song_name}' not found in the database."}), 404
-
-    played_file_name = played_file.filename
-    if "filename=" in played_file_name:
-        played_file_name = played_file_name.split("filename=")[1][:-1]
+    # Get the base64 string and song name from request
+    played_file_base64 = request.json.get("played_file_base64")
+    song_name = request.json.get("song_name")
 
     try:
-        played_file = get_played_midi_from_database(played_file_name)
-    except FileNotFoundError:
-        return jsonify({"error": f"Played song '{played_file_name}' not found in the database."}), 404
+        # Clean the base64 string
+        # Remove potential 'data:audio/midi;base64,' prefix if it exists
+        if ';base64,' in played_file_base64:
+            played_file_base64 = played_file_base64.split(';base64,')[1]
+        
+        # Remove any whitespace, newlines, or padding issues
+        played_file_base64 = played_file_base64.strip()
+        
+        # Add padding if necessary
+        padding = len(played_file_base64) % 4
+        if padding:
+            played_file_base64 += '=' * (4 - padding)
 
-    original_notes, original_tempos, original_times, original_length = load_midi(original_file)
-    played_notes, played_tempos, played_times, played_length = load_midi(played_file)
+        try:
+            # Decode base64 string to binary
+            binary_data = base64.b64decode(played_file_base64)
+            
+            # Verify we got some data
+            if not binary_data:
+                return jsonify({"error": "Decoded data is empty"}), 400
+                
+            print(f"Successfully decoded {len(binary_data)} bytes")
+            
+        except base64.binascii.Error as e:
+            print(f"Base64 decoding error: {str(e)}")
+            return jsonify({"error": "Invalid base64 encoding"}), 400
 
-    max_length = min(original_length, played_length)
-    segment_duration = 3.0
+        # Save binary data temporarily
+        temp_file_path = os.path.join("temp", "recorded.mid")
+        os.makedirs(os.path.dirname(temp_file_path), exist_ok=True)
 
-    results, visualization2_path = compare_accuracies_per_segment(
-        original_notes, played_notes, original_tempos, played_tempos, original_times,
-        played_times, segment_duration, max_length
-    )
+        with open(temp_file_path, "wb") as temp_file:
+            temp_file.write(binary_data)
 
-    visualization_path = visualize_all_midi_notes(original_notes, played_notes, max_length)
+        # Store the MIDI file in database
+        played_file = store_played_midi(temp_file_path)
 
-    with open(visualization_path, "rb") as image_file:
-        visualization_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+        try:
+            original_file = get_midi_from_database(song_name)
+        except FileNotFoundError:
+            return jsonify({"error": f"Original song '{song_name}' not found in the database."}), 404
 
-    with open(visualization2_path, "rb") as image_file:
-        visualization2_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+        # Get played file name
+        played_file_name = played_file.filename
+        if "filename=" in played_file_name:
+            played_file_name = played_file_name.split("filename=")[1][:-1]
 
-    os.remove(temp_file_path)
-    print("leaving backend")
-    return jsonify({
-        "accuracy": results,
-        "visualization": visualization_base64,
-        "visualization2": visualization2_base64
-    })
+        try:
+            played_file = get_played_midi_from_database(played_file_name)
+        except FileNotFoundError:
+            return jsonify({"error": f"Played song '{played_file_name}' not found in the database."}), 404
 
+        # Load and process MIDI files
+        original_notes, original_tempos, original_times, original_length = load_midi(original_file)
+        played_notes, played_tempos, played_times, played_length = load_midi(played_file)
+
+        # Compare and visualize
+        max_length = min(original_length, played_length)
+        segment_duration = 3.0
+        results, visualization2_path = compare_accuracies_per_segment(
+            original_notes, played_notes, original_tempos, played_tempos, original_times,
+            played_times, segment_duration, max_length
+        )
+
+        visualization_path = visualize_all_midi_notes(original_notes, played_notes, max_length)
+
+        # Convert visualizations to base64
+        with open(visualization_path, "rb") as image_file:
+            visualization_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+        with open(visualization2_path, "rb") as image_file:
+            visualization2_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+        # Clean up temporary file
+        os.remove(temp_file_path)
+
+        print("leaving backend")
+        return jsonify({
+            "accuracy": results,
+            "visualization": visualization_base64,
+            "visualization2": visualization2_base64
+        })
+
+    except Exception as e:
+        return jsonify({"error": f"Error processing MIDI data: {str(e)}"}), 500
 
 @app.route('/songs', methods=['GET'])
 def get_songs():

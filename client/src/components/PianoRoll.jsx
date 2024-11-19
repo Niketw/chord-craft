@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import Metronome from './Metronome';
-import Comparator from './comparator';
+ import MidiComparison from './comparator';
 
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const START_OCTAVE = 3;
@@ -8,7 +8,7 @@ const END_OCTAVE = 5;
 const PIXEL_PER_SECOND = 100;
 const NOTE_HEIGHT = 10;
 
-const PianoRoll = forwardRef(({ midiData, selectedSong }, ref) => {
+const PianoRoll = forwardRef(({ midiData, selectedSong,noInfinity=true }, ref) => {
     const [allNotes, setAllNotes] = useState([]);
     const [duration, setDuration] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -247,7 +247,7 @@ const PianoRoll = forwardRef(({ midiData, selectedSong }, ref) => {
   return (
     <div>
       {/* Playback Controls */}
-      <div className="flex items-center gap-4 mb-1 py-2 px-8 border border-secondary text-primary justify-between rounded-md">
+      {noInfinity && <div className="flex items-center gap-4 mb-1 py-2 px-8 border border-secondary text-primary justify-between rounded-md">
         <div className="flex gap-2">
           <button
             onClick={isPlaying ? handlePause : handlePlay}
@@ -280,7 +280,7 @@ const PianoRoll = forwardRef(({ midiData, selectedSong }, ref) => {
         <div className={`px-2 py-1 rounded ${isRecording ? 'bg-red-500' : 'bg-gray-300'}`}>
         {isRecording ? 'Recording' : 'Not Recording'}
         </div>
-      </div>
+      </div> }
 
       {/* Piano Roll */}
       <div className="flex overflow-x-auto border border-secondary" ref={containerRef}>
@@ -370,7 +370,8 @@ const PianoRoll = forwardRef(({ midiData, selectedSong }, ref) => {
         </div>
       </div>
 
-          {recordedData && <Comparator recordedData={recordedData} selectedSong={selectedSong} /> }
+          <PianoRoll noInfinity={false} midiData={recordedData} selectedSong={selectedSong} className="mt-16"/>
+          {recordedData && <MidiComparison recordedMidi={recordedData} originalMidi={midiData} /> }
       
     </div>
   );

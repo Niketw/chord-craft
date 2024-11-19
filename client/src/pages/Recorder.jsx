@@ -529,7 +529,7 @@ export default function Recorder() {
                     >
                         <option value="">Select a Song</option>
                         {songs.map((song, index) => (
-                            <option key={index} value={song}>{song}</option>
+                            <option key={index} value={song.name}>{song.name}</option>
                         ))}
                     </select>
 
