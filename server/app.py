@@ -322,7 +322,7 @@ def get_library_items():
                 'image': f"data:image/jpeg;base64,{base64.b64encode(song.cover).decode('utf-8')}",
                 # Convert binary to Base64
                 'title': song.filename,
-                'subtitle': song.artist,
+                'artist': song.artist,
                 'clicks': song.clicks  # Include clicks for sorting purpose
             }
             for song in songs

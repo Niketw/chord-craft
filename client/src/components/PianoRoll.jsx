@@ -371,7 +371,7 @@ const PianoRoll = forwardRef(({ midiData, selectedSong,noInfinity=true }, ref) =
       </div>
 
           <PianoRoll noInfinity={false} midiData={recordedData} selectedSong={selectedSong} className="mt-16"/>
-          {recordedData && <MidiComparison recordedMidi={recordedData} originalMidi={midiData} /> }
+          {recordedData && <MidiComparison recordedMidi={recordedData} originalMidi={midiData} selectedSong={selectedSong} /> }
       
     </div>
   );

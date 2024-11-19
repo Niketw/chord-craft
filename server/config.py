@@ -25,3 +25,4 @@ class ApplicationConfig:
     MAIL_PASSWORD = os.environ["MAIL_PASSWORD"]
     MAIL_DEFAULT_SENDER = os.environ["MAIL_DEFAULT_SENDER"]
 
+

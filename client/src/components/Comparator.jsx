@@ -311,8 +311,9 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Award, Clock, Music, ThumbsUp, AlertTriangle } from 'lucide-react';
+import httpClient from "../HttpClient";
 
-const MidiComparison = ({ originalMidi, recordedMidi }) => {
+const MidiComparison = ({ originalMidi, recordedMidi, selectedSong}) => {
   const [scores, setScores] = useState({
     noteAccuracy: 0,
     timingAccuracy: 0,
@@ -339,6 +340,11 @@ const MidiComparison = ({ originalMidi, recordedMidi }) => {
     const comparison = comparePerformances(originalNotes, recordedNotes);
     setScores(comparison.scores);
     setDetails(comparison.details);
+
+     if (comparison.scores) {
+    postClickIncrement();
+  }
+
   }, [originalMidi, recordedMidi]);
 
   const comparePerformances = (originalNotes, recordedNotes) => {
@@ -417,6 +423,26 @@ const MidiComparison = ({ originalMidi, recordedMidi }) => {
     { name: 'Timing Accuracy', value: scores.timingAccuracy },
     { name: 'Rhythm Accuracy', value: scores.rhythmAccuracy }
   ];
+
+
+  const postClickIncrement = async () => {
+  try {
+    const response = await httpClient.post('/increment-clicks', {
+      comparisonDone: true,
+      song_name: selectedSong // assuming you want to include selectedSong in the request body
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Failed to increment clicks');
+    }
+
+    console.log('Clicks incremented successfully');
+  } catch (error) {
+    console.error('Error incrementing clicks:', error);
+  }
+};
+
+
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-8">

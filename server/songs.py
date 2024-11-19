@@ -1,8 +1,10 @@
 import os
 import pygame
-from flask import Flask
+from flask import Flask, current_app
 from models import db, MidiStorage, PlayedMidi
 from dotenv import load_dotenv
+from app import db
+
 
 load_dotenv()
 
@@ -62,6 +64,28 @@ def store_midi():
         db.session.add(new_midi)
         db.session.commit()
         print(f"MIDI file '{filename}' stored successfully with artist '{artist_name}' and cover image!")
+
+
+
+
+def view_midi_details(filename):
+    with app.app_context():
+        # Query the MidiStorage table for the given filename
+        midi_record = MidiStorage.query.filter_by(filename=filename).first()
+
+        if not midi_record:
+            return jsonify({'error': f"No MIDI file found with the name '{filename}'"}), 404
+
+        # Create a dictionary to return the details
+        midi_details = {
+            'filename': midi_record.filename,
+            'artist': midi_record.artist,
+            'clicks': midi_record.clicks,
+        }
+        print(midi_details)
+
+
+
 
 
 def play_midi():
@@ -124,7 +148,7 @@ def get_midi_from_database(song_name):
 
 
 def store_played_midi(file_path):
-    """Function to store a MIDI file in the database without the .mid extension in the filename."""
+    """Function to drop and recreate the PlayedMidi table, then store a MIDI file in the database."""
     if not os.path.exists(file_path):
         print(f"File '{file_path}' does not exist.")
         return
@@ -136,20 +160,28 @@ def store_played_midi(file_path):
     filename = os.path.basename(file_path)
     filename = filename.rsplit('.mid', 1)[0]  # Remove the .mid extension
 
-    # Check for duplicate filename
     with app.app_context():
-        existing_midi = PlayedMidi.query.filter_by(filename=filename).first()
-        if existing_midi:
-            print(f"A MIDI file with the name '{filename}' already exists.")
-            return existing_midi
+        try:
+            # Drop the PlayedMidi table
+            PlayedMidi.__table__.drop(db.engine)
+            print("PlayedMidi table dropped.")
 
-    # Create a new MidiStorage record
-    new_midi = PlayedMidi(filename=filename, file_data=file_data)
-    with app.app_context():
-        db.session.add(new_midi)
-        db.session.commit()
-        print(f"MIDI file '{filename}' stored successfully!")
-        return new_midi
+            # Recreate the PlayedMidi table
+            PlayedMidi.__table__.create(db.engine)
+            print("PlayedMidi table recreated.")
+
+            # Create a new PlayedMidi record
+            new_midi = PlayedMidi(filename=filename, file_data=file_data)
+            db.session.add(new_midi)
+            db.session.commit()
+            print(f"MIDI file '{filename}' stored successfully!")
+            return new_midi
+
+        except Exception as e:
+            db.session.rollback()  # Rollback in case of an error
+            print(f"Error while storing the MIDI file: {e}")
+            raise
+
 
 
 # Function to retrieve Played MIDI from the database
@@ -192,7 +224,7 @@ if __name__ == "__main__":
 
         while True:
             option = input(
-                "Choose an option: 'add' to store a MIDI, 'delete' to delete a MIDI, 'play' to play a MIDI, or 'exit' to quit: ").lower()
+                "Choose an option: 'add' to store a MIDI, 'delete' to delete a MIDI, 'view' details of MIDI, 'play' to play a MIDI, or 'exit' to quit: ").lower()
             if option == 'exit':
                 print("Exiting the program.")
                 break
@@ -200,6 +232,9 @@ if __name__ == "__main__":
                 store_midi()
             elif option == 'delete':
                 delete_midi()
+            elif option == 'view':
+                filename=input("Enter file name: ")
+                view_midi_details(filename)
             elif option == 'play':
                 play_midi()
             else:
