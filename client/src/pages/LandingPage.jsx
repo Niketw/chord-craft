@@ -48,7 +48,7 @@ export default function Landing() {
                         loop 
                         className="w-full h-full object-cover"
                     >
-                        <source src="https://fantastic-twilight-7bfa45.netlify.app/newusers.mp4" type="video/mp4" />
+                        <source src="https://ia902909.us.archive.org/10/items/login_202411/newusers.mp4" type="video/mp4" />
                     </video>
                 )}
                 {user && (
@@ -58,7 +58,7 @@ export default function Landing() {
                     loop 
                     className="w-full h-full object-cover"
                 >
-                    <source src="https://fantastic-twilight-7bfa45.netlify.app/login.mp4" type="video/mp4" />
+                    <source src="https://ia802909.us.archive.org/10/items/login_202411/newusers.mp4" type="video/mp4" />
                 </video>
                 )}
             </div>
