@@ -58,7 +58,7 @@ export default function Landing() {
                     loop 
                     className="w-full h-full object-cover"
                 >
-                    <source src="https://ia802909.us.archive.org/10/items/login_202411/newusers.mp4" type="video/mp4" />
+                    <source src="https://ia802909.us.archive.org/10/items/login_202411/login.mp4" type="video/mp4" />
                 </video>
                 )}
             </div>

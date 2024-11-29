@@ -41,7 +41,7 @@ export default function Contact() {
                     muted
                     playsInline
                 >
-                    <source src="https://fantastic-twilight-7bfa45.netlify.app/newusers.mp4" type="video/mp4" />
+                    <source src="https://ia802909.us.archive.org/10/items/login_202411/newusers.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
                 <div className='flex text-primary min-h-[500px] justify-center backdrop-blur-md bg-blue-700/10 overflow-clip rounded-2xl relative z-10 py-8'>
